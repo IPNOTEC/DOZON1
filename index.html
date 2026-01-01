@@ -8,56 +8,6 @@
   <!-- Razorpay -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-  <style>
-    body {
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    input, button {
-      padding: 12px;
-      margin: 8px;
-      font-size: 16px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- 🔐 LOGIN + PAYMENT SECTION -->
-  <div id="paymentSection">
-    <h2>Enter DOZON</h2>
-
-    <input
-      type="email"
-      id="userEmail"
-      placeholder="Enter your email"
-      required
-    />
-
-    <br />
-
-    <button onclick="saveUser()">Continue</button>
-
-    <div id="payBlock" style="display:none;">
-      <p>Unlock full access</p>
-      <button onclick="startPayment()">Pay & Unlock</button>
-    </div>
-  </div>
-
-  <!-- 🔓 APP SECTION -->
-  <div id="appSection" style="display:none;">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>DOZON</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Razorpay -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
   <!-- Your existing styles can remain below -->
   <style>
     body {
@@ -2238,77 +2188,6 @@
     window.addEventListener("load", function () {
       if (localStorage.getItem("dozon_paid") === "true") {
         unlockAccess();
-      }
-    });
-  </script>
-
-</body>
-</html>
-
-    <h1>Welcome to DOZON</h1>
-    <p>User-specific access unlocked.</p>
-
-    <!-- ===================================================== -->
-  </div>
-
-  <!-- ================= LOGIC ================= -->
-  <script>
-    let currentUser = null;
-
-    function saveUser() {
-      const email = document.getElementById("userEmail").value.trim();
-      if (!email) {
-        alert("Please enter a valid email");
-        return;
-      }
-
-      currentUser = email;
-      localStorage.setItem("dozon_user", email);
-
-      if (localStorage.getItem("dozon_paid_" + email) === "true") {
-        unlockAccess();
-      } else {
-        document.getElementById("payBlock").style.display = "block";
-      }
-    }
-
-    function startPayment() {
-      var options = {
-        key: "rzp_test_RyiMGZV8RZr4Ja", // 🔴 REPLACE WITH YOUR KEY ID
-        amount: 19900,
-        currency: "INR",
-        name: "DOZON",
-        description: "User Access Unlock",
-        handler: function () {
-          localStorage.setItem("dozon_paid_" + currentUser, "true");
-          unlockAccess();
-          alert("Payment successful. Access unlocked.");
-        },
-        theme: {
-          color: "#00ffcc"
-        }
-      };
-
-      var rzp = new Razorpay(options);
-      rzp.open();
-    }
-
-    function unlockAccess() {
-      document.getElementById("paymentSection").style.display = "none";
-      document.getElementById("appSection").style.display = "block";
-    }
-
-    window.addEventListener("load", function () {
-      const savedUser = localStorage.getItem("dozon_user");
-      if (savedUser) {
-        currentUser = savedUser;
-        document.getElementById("userEmail").value = savedUser;
-
-        if (localStorage.getItem("dozon_paid_" + savedUser) === "true") {
-          unlockAccess();
-        } else {
-          document.getElementById("payBlock").style.display = "block";
-        }
       }
     });
   </script>
