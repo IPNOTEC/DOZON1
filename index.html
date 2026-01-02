@@ -3,14 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPNOTEC | DOZON.XYZ Game Arena</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>DOZON.XYZ • Secure Game Arena</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* Import Disk Mono font */
+        @font-face {
+            font-family: 'Disket Mono';
+            src: url('https://cdn.jsdelivr.net/gh/google/fonts/ofl/ibmplexmono/IBMPlexMono-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
         :root {
-            /* DOZON Color Scheme */
-            --dozon-green: #00FF00;
-            --xyz-violet: #8F00FF;
+            /* Primary Colors */
             --primary: #8F00FF;
             --secondary: #404040;
             --accent: #00FF00;
@@ -33,301 +41,41 @@
             --pc-bezel: #111111;
             --active-color: #8A2BE2;
             
-            /* IPNOTEC Frame */
-            --bg-color: #000000;
-            --device-body: rgba(10, 10, 15, 0.95);
-            --screen-bg: #000000;
-            --electric-violet: #8F00FF;
-            --stellar-white: #FFFFFF;
-            --danger-red: #FF1A1A;
-            --frame-glow: #333344;
-            --electric-blue: #00B0F0;
-            --electric-orange: #FF6900;
-            --neon-grey: #B0B0C0;
-            --tron-blue: #00F0FF;
+            /* Max Width */
+            --max-width: 1200px;
             
             /* Fonts */
-            --font-main: 'IBM Plex Mono', monospace;
+            --font-main: 'Disket Mono', monospace;
             --font-futuristic: 'Orbitron', sans-serif;
+            --font-rajdhani: 'Rajdhani', sans-serif;
             
             /* Effects */
             --neon-glow: 0 0 20px currentColor;
             --transition: all 0.3s ease;
         }
-
-        * { 
-            box-sizing: border-box; 
-            font-family: 'IBM Plex Mono', monospace; 
-        }
-
-        body {
-            margin: 0; 
-            padding: 0;
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(0, 255, 0, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(143, 0, 255, 0.1) 0%, transparent 40%);
-            height: 100vh;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            overflow: hidden; 
-            color: var(--stellar-white);
-            backdrop-filter: blur(2px);
-        }
-
-        /* --- ANIMATED BACKGROUND --- */
-        #canvas-bg {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            z-index: 0; 
-            opacity: 0.4; 
-            pointer-events: none;
-        }
-
-        /* --- MAIN DEVICE FRAME --- */
-        .ecosystem-device {
-            width: 500px;
-            height: 810px;
-            max-width: 95vw;
-            max-height: 95vh;
-            background: linear-gradient(145deg, rgba(10, 10, 15, 0.95), rgba(20, 20, 30, 0.95));
-            border-radius: 30px;
-            position: relative;
-            box-shadow: 
-                0 0 40px rgba(0, 255, 0, 0.4),
-                0 0 80px rgba(143, 0, 255, 0.2),
-                0 0 120px rgba(143, 0, 255, 0.1),
-                inset 0 0 20px rgba(255,255,255,0.05);
-            border: 2px solid var(--xyz-violet);
-            display: flex; 
-            flex-direction: column;
-            overflow: hidden; 
-            z-index: 10;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
-        }
-
-        /* --- POD HEADER --- */
-        .pod-header {
-            height: 100px;
-            background: linear-gradient(180deg, rgba(1, 26, 16, 0.95) 0%, rgba(0, 16, 9, 0.95) 100%);
-            position: relative;
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(0, 255, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            backdrop-filter: blur(5px);
-        }
-
-        .pod-model-display {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex: 1;
-        }
-
-        .pod-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(1, 26, 16, 0.9);
-            border: 1px solid var(--dozon-green);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            position: relative;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-            backdrop-filter: blur(5px);
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 1px;
-            background: var(--dozon-green);
-            animation: dotPulse 1.5s infinite alternate;
-            box-shadow: 0 0 8px var(--dozon-green);
-        }
-
-        .dot:nth-child(2) {
-            animation-delay: 0.3s;
-            background: var(--xyz-violet);
-            box-shadow: 0 0 8px var(--xyz-violet);
-        }
-
-        @keyframes dotPulse {
-            0% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        .pod-status {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pod-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        .dozon-text {
-            color: var(--dozon-green);
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
-        }
-
-        .xyz-text {
-            color: var(--xyz-violet);
-            text-shadow: 0 0 10px rgba(143, 0, 255, 0.7);
-        }
-
-        .pod-subtitle {
-            font-size: 9px;
-            color: #B0B0C0;
-            letter-spacing: 1px;
-            margin-top: 5px;
-        }
-
-        .pod-subtitle span {
-            color: var(--accent);
-            font-weight: 700;
-            text-shadow: 0 0 5px var(--accent);
-        }
-
-        /* --- LIVE STATS --- */
-        .live-stats {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
-            position: absolute;
-            top: 15px;
-            right: 20px;
-        }
-
-        .stat-box {
-            text-align: right;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .stat-label {
-            font-size: 8px;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            min-width: 45px;
-            text-align: right;
-        }
-
-        .stat-value {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--dozon-green);
-            font-family: 'Orbitron', sans-serif;
-            min-width: 45px;
-            text-align: right;
-            text-shadow: 0 0 8px var(--dozon-green);
-        }
-
-        /* --- MODE NAVIGATION --- */
-        .mode-nav {
-            display: flex;
-            background: rgba(1, 26, 16, 0.95);
-            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
-            backdrop-filter: blur(5px);
-        }
-
-        .mode-tab {
-            flex: 1;
-            padding: 12px 5px;
-            text-align: center;
-            font-size: 9px;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-bottom: 2px solid transparent;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .mode-tab.active {
-            color: var(--dozon-green);
-            border-color: var(--dozon-green);
-            background: rgba(0, 255, 0, 0.1);
-            font-weight: 700;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        .mode-tab.locked {
-            color: #666;
-            cursor: not-allowed;
-            position: relative;
-        }
-
-        .mode-tab.locked::after {
-            content: '🔒';
-            font-size: 8px;
-            position: absolute;
-            top: 2px;
-            right: 2px;
-        }
-
-        .mode-tab i {
-            display: block;
-            font-size: 12px;
-            margin-bottom: 5px;
-        }
-
-        /* --- CONTENT AREA --- */
-        .content-area {
-            flex-grow: 1;
-            background: rgba(0, 0, 0, 0.9);
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content-panel {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 40px);
-            overflow-y: auto;
-            scrollbar-width: thin;
-            display: none;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-        }
-
-        .content-panel.active {
-            display: block;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- DOZON GAME STYLES --- */
         
-        /* Cyber Grid Background */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: var(--font-main);
+            background: radial-gradient(circle at 50% 50%, 
+                var(--dark-green) 0%, 
+                var(--darkest-green) 70%);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Background elements */
         .cyber-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: fixed;
+            inset: 0;
             width: 100%;
             height: 100%;
             background-image: 
@@ -339,17 +87,45 @@
             pointer-events: none;
         }
         
-        .glow-line {
+        .particles {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
             position: absolute;
-            top: 0;
-            left: 10%;
-            width: 80%;
+            background: rgba(138, 43, 226, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        .glow-line {
+            position: fixed;
+            inset: 0;
             height: 1px;
             background: linear-gradient(90deg, 
                 transparent, 
-                var(--xyz-violet), 
+                var(--rose-gold), 
                 transparent);
-            filter: drop-shadow(0 0 5px var(--xyz-violet));
+            filter: drop-shadow(0 0 5px var(--rose-gold));
             animation: scan 8s infinite linear;
             z-index: 0;
             pointer-events: none;
@@ -361,20 +137,30 @@
             100% { top: 100%; opacity: 0; }
         }
         
-        /* Frame styling */
+        /* Page container */
+        .page {
+          position:relative;
+          z-index:2;
+          min-height:100vh;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          padding:20px;
+          overflow-y: auto;
+        }
+
         .frame {
-            width: 100%;
-            background: var(--darkgrey);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 15px 60px rgba(0,0,0,0.7);
-            border: 1px solid var(--secondary);
-            backdrop-filter: blur(10px) saturate(120%);
-            overflow: visible;
-            max-height: 100%;
-            overflow-y: auto;
-            position: relative;
-            z-index: 1;
+          width:100%;
+          max-width: var(--max-width);
+          background: var(--darkgrey);
+          padding: 20px;
+          border-radius: 15px;
+          box-shadow: 0 15px 60px rgba(0,0,0,0.7);
+          border: 1px solid var(--secondary);
+          backdrop-filter: blur(10px) saturate(120%);
+          overflow: visible;
+          max-height: 95vh;
+          overflow-y: auto;
         }
 
         header.topbar{
@@ -398,131 +184,132 @@
             background: var(--glass);
             border: 1px solid var(--secondary);
             font-size: 18px;
-            color: var(--dozon-green);
+            color: var(--accent);
         }
 
         /* Hero section */
         .hero {
           display:flex;
-          flex-direction: column;
-          gap:15px;
-          margin-bottom:15px;
+          align-items:center;
+          justify-content:space-between;
+          gap:18px;
+          margin-bottom:18px;
         }
         .become {
             font-family: var(--font-futuristic);
-            font-size: 28px;
+            font-size: 42px;
             font-weight: 900;
             letter-spacing: 2px;
             color: var(--white);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 14px;
             line-height: 0.95;
         }
         .become .nothing {
             opacity: 0.95;
-            color: var(--dozon-green);
-            text-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+            color: var(--rose-gold);
+            text-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
         }
         .become .blink-i{
-            font-size: 32px;
+            font-size: 62px;
             font-weight: 900;
             cursor: pointer;
             display: inline-block;
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 8px;
             background: var(--glass);
             border: 1px dashed var(--secondary);
-            box-shadow: 0 0 36px 3px rgba(0, 255, 0, 0.1) inset;
+            box-shadow: 0 0 36px 3px rgba(69, 222, 16, 0.1) inset;
             transition: transform .18s;
-            color: var(--xyz-violet);
+            color: var(--accent);
         }
         .blink-i .bar{display:inline-block;animation:blink 1s steps(1) infinite}
         .blink-i:hover{transform:scale(1.05)}
         @keyframes blink{0%{opacity:1}50%{opacity:0.08}100%{opacity:1}}
 
         .mutedline{
-            font-size: 11px;
+            font-size: 15px;
             color: var(--lightgrey);
             margin-top: 6px;
-            font-family: var(--font-main);
+            max-width: 700px;
+            font-family: var(--font-rajdhani);
         }
 
         .fkey{
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 6px 10px;
-            border-radius: 8px;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
             background: var(--mediumgrey);
             border: 1px solid var(--secondary);
             box-shadow: 0 6px 24px rgba(0,0,0,0.6);
         }
         .fkey .kbd{
             font-family: var(--font-main);
-            padding: 6px 10px;
+            padding: 8px 12px;
             border-radius: 6px;
             background: var(--glass);
             border: 1px solid var(--secondary);
-            font-size: 11px;
         }
 
         /* Panel styling */
         .panel{
             background: var(--darkgrey);
-            border-radius: 10px;
-            padding: 12px;
+            border-radius: 15px;
+            padding: 20px;
             border: 1px solid var(--secondary);
-            box-shadow: 0 0 15px var(--glow-color);
-            margin-bottom: 12px;
+            box-shadow: 0 0 20px var(--glow-color);
+            margin-bottom: 20px;
         }
         .panel-title{
-            font-size: 16px;
+            font-size: 22px;
             font-weight: 800;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-family: var(--font-futuristic);
-            color: var(--dozon-green);
+            color: var(--accent);
         }
-        label{display:block;margin-bottom:5px;color:var(--lightgrey);font-size:11px; font-family: var(--font-main);}
+        label{display:block;margin-bottom:8px;color:var(--lightgrey);font-size:14px; font-family: var(--font-rajdhani);}
 
         /* Form elements */
         input, select, textarea {
             width: 100%;
-            padding: 8px;
-            border-radius: 6px;
+            padding: 10px;
+            border-radius: 10px;
             border: 1px solid var(--secondary);
             background: var(--mediumgrey);
             color: var(--white);
-            font-size: 11px;
+            font-size: 14px;
             outline: none;
             font-family: var(--font-main);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         input:focus, select:focus, textarea:focus {
-            box-shadow: 0 0 8px rgba(0, 255, 0, 0.2);
-            border-color: var(--dozon-green);
+            box-shadow: 0 0 12px rgba(69, 222, 16, 0.2);
+            border-color: var(--accent);
         }
 
         .btn{
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
-            font-weight: 700;
-            font-size: 11px;
-            font-family: var(--font-main);
+            font-weight: 800;
+            font-size: 14px;
+            font-family: var(--font-rajdhani);
             text-transform: uppercase;
             transition: var(--transition);
-            margin: 3px;
+            margin: 5px;
         }
         .btn.primary{
-            background: linear-gradient(90deg, var(--xyz-violet), var(--dozon-green));
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             color: var(--black);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
         }
         .btn.primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 20px var(--dozon-green);
+            box-shadow: 0 0 25px var(--accent);
         }
         .btn.ghost{
             background: transparent;
@@ -533,147 +320,218 @@
             background: var(--glass);
             border-color: var(--white);
         }
-        .btn.locked {
-            background: var(--mediumgrey);
-            color: #666;
-            cursor: not-allowed;
-        }
 
-        .controls{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-start;margin-top:8px}
+        .controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-start;margin-top:12px}
 
         /* Player list */
-        .player-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+        .player-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+        @media (max-width:1100px){.player-list{grid-template-columns:repeat(2,1fr)}}
+        @media (max-width:600px){.player-list{grid-template-columns:1fr}}
         
         .player-card{
-            padding: 8px;
-            border-radius: 6px;
+            padding: 12px;
+            border-radius: 10px;
             background: var(--mediumgrey);
             border: 1px solid var(--secondary);
-            font-size: 10px;
         }
-        .player-name{font-weight:800;font-size:12px;margin-bottom:4px; font-family: var(--font-main);}
-        .player-points{font-weight:900;color:var(--dozon-green);font-size:12px}
+        .player-name{font-weight:800;font-size:16px;margin-bottom:6px; font-family: var(--font-rajdhani);}
+        .player-points{font-weight:900;color:var(--accent);font-size:16px}
 
         /* Scene container */
         .scene-container{
-            margin-top: 8px;
+            margin-top: 12px;
             background: var(--darker-green);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 16px;
+            border-radius: 10px;
             border: 1px solid var(--secondary);
         }
-        .scene-title{font-size:14px;font-weight:800;margin-bottom:6px; font-family: var(--font-main); color: var(--xyz-violet);}
+        .scene-title{font-size:20px;font-weight:800;margin-bottom:10px; font-family: var(--font-rajdhani); color: var(--rose-gold);}
         .scene-content{
-            min-height: 70px;
-            padding: 8px;
-            border-radius: 6px;
+            min-height: 120px;
+            padding: 12px;
+            border-radius: 8px;
             background: rgba(0,0,0,0.25);
-            font-size: 11px;
+            font-size: 14px;
             border: 1px solid var(--secondary);
         }
-        .action-text{padding:6px;border-radius:6px;margin-bottom:6px;font-size:11px}
-        .blue-text{background:rgba(0, 255, 255, 0.1);color:var(--dozon-green);border-left:4px solid var(--dozon-green)}
+        .action-text{padding:10px;border-radius:8px;margin-bottom:8px;font-size:14px}
+        .blue-text{background:rgba(0, 255, 255, 0.1);color:var(--green);border-left:4px solid var(--green)}
         .pink-text{background:rgba(255, 77, 166, 0.1);color:var(--rose-gold-light);border-left:4px solid var(--rose-gold-light)}
 
         .timer{
-            font-size: 24px;
+            font-size: 36px;
             font-weight: 900;
             text-align: center;
-            margin: 10px 0;
-            color: var(--xyz-violet);
+            margin: 18px 0;
+            color: var(--rose-gold);
             font-family: var(--font-main);
         }
 
-        .points-table{width:100%;border-collapse:collapse;margin-top:8px;background:transparent; font-size: 10px;}
-        .points-table th{padding:6px;text-align:left;color:var(--lightgrey);font-size:10px; font-family: var(--font-main);}
-        .points-table td{padding:6px;border-top:1px solid var(--secondary);font-size:10px}
+        .points-table{width:100%;border-collapse:collapse;margin-top:12px;background:transparent}
+        .points-table th{padding:10px;text-align:left;color:var(--lightgrey);font-size:13px; font-family: var(--font-rajdhani);}
+        .points-table td{padding:10px;border-top:1px solid var(--secondary);font-size:13px}
 
         /* Game grid */
-        .game-shell{display:block;margin-top:15px;gap:12px}
-        .game-grid{display:grid;grid-template-columns:1fr;gap:12px}
+        .game-shell{display:none;margin-top:20px;gap:22px}
+        .game-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+        @media (max-width:1100px){.game-grid{grid-template-columns:1fr}}
 
         /* Account section */
         .account-section {
-            display: block;
-            margin-top: 12px;
+            display: none;
+            margin-top: 20px;
         }
         
         .rules-section {
-            display: block;
-            margin-top: 12px;
+            display: none;
+            margin-top: 20px;
         }
         
         .profile-section {
-            display: block;
-            margin-top: 12px;
+            display: none;
+            margin-top: 20px;
         }
         
         .my-dozon-section {
-            display: block;
-            margin-top: 12px;
+            display: none;
+            margin-top: 20px;
         }
         
         .group-dashboard-section {
-            display: block;
-            margin-top: 12px;
+            display: none;
+            margin-top: 20px;
         }
         
         .create-group-section {
-            display: block;
-            margin-top: 12px;
+            display: none;
+            margin-top: 20px;
         }
         
         .payment-section {
-            display: block;
-            margin-top: 12px;
+            display: none;
+            margin-top: 20px;
         }
         
         .payment-info {
             background: var(--darker-green);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 16px;
+            border-radius: 10px;
             border: 1px solid var(--secondary);
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
         
         .payment-amount {
-            font-size: 18px;
+            font-size: 24px;
             font-weight: 900;
-            color: var(--dozon-green);
+            color: var(--accent);
             text-align: center;
-            margin: 6px 0;
-        }
-        
-        .payment-features {
             margin: 10px 0;
         }
         
+        .payment-features {
+            margin: 16px 0;
+        }
+        
         .payment-features li {
-            margin-bottom: 5px;
-            padding-left: 14px;
+            margin-bottom: 8px;
+            padding-left: 20px;
             position: relative;
-            font-size: 10px;
         }
         
         .payment-features li:before {
             content: "✓";
             position: absolute;
             left: 0;
-            color: var(--dozon-green);
+            color: var(--accent);
         }
         
-        /* Progress Steps */
+        /* Modals */
+        .modal { 
+            display:none; 
+            position:fixed; 
+            inset:0; 
+            z-index:9999; 
+            align-items:center; 
+            justify-content:center; 
+            background:rgba(0,0,0,0.7); 
+            padding:20px; 
+            backdrop-filter: blur(5px);
+        }
+        .modal .box{
+            background: var(--darkgrey);
+            padding: 18px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 760px;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 30px var(--accent);
+        }
+        .modal h3{font-size:20px;margin-bottom:10px; font-family: var(--font-futuristic); color: var(--accent);}
+        .choice-row{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+            padding: 8px 6px;
+            border-radius: 8px;
+            background: var(--mediumgrey);
+            margin-bottom: 8px;
+        }
+        .choice-row label{font-weight:700; font-family: var(--font-rajdhani);}
+
+        /* Security indicators */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: rgba(69, 222, 16, 0.1);
+            border: 1px solid var(--accent);
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .security-badge i {
+            color: var(--accent);
+        }
+        
+        /* Status indicators */
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background-color: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+        
+        .status-offline {
+            background-color: var(--lightgrey);
+        }
+
+        /* Helpful small text */
+        .small-muted{font-size:12px;color:var(--lightgrey);margin-top:8px}
+
+        /* Ensure large, visible clickable */
+        button, select, input { -webkit-tap-highlight-color: rgba(0,0,0,0.0); }
+
+        /* Progress indicators */
         .progress-steps {
             display: flex;
             justify-content: space-between;
-            margin: 15px 0;
+            margin: 20px 0;
             position: relative;
         }
         
         .progress-steps:before {
             content: '';
             position: absolute;
-            top: 12px;
+            top: 15px;
             left: 0;
             right: 0;
             height: 2px;
@@ -690,1297 +548,972 @@
         }
         
         .step-number {
-            width: 22px;
-            height: 22px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: var(--mediumgrey);
             border: 2px solid var(--secondary);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             font-weight: bold;
-            font-size: 10px;
         }
         
         .step.active .step-number {
-            background: var(--dozon-green);
-            border-color: var(--dozon-green);
+            background: var(--accent);
+            border-color: var(--accent);
             color: var(--black);
         }
         
-        .step.locked .step-number {
-            background: var(--mediumgrey);
-            border-color: #666;
-            color: #666;
-        }
-        
         .step-label {
-            font-size: 9px;
+            font-size: 12px;
             text-align: center;
         }
 
-        /* Security indicators */
-        .security-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid var(--dozon-green);
-            font-size: 9px;
-            margin-left: 8px;
-        }
-        
-        .security-badge i {
-            color: var(--dozon-green);
-        }
-        
-        /* Status indicators */
-        .status-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-        
-        .status-online {
-            background-color: var(--dozon-green);
-            box-shadow: 0 0 8px var(--dozon-green);
-        }
-        
-        .status-offline {
-            background-color: var(--lightgrey);
+        /* Responsive */
+        @media (max-width:768px){
+            .hero { flex-direction: column; text-align: center; }
+            .become { font-size: 32px; }
+            .become .blink-i { font-size: 42px; }
         }
 
-        /* Helpful small text */
-        .small-muted{font-size:9px;color:var(--lightgrey);margin-top:5px}
-
-        /* --- STATUS BAR (FIXED FOOTER) --- */
-        .status-bar {
-            height: 35px;
-            min-height: 35px;
-            background: rgba(1, 26, 16, 0.95);
-            border-top: 1px solid rgba(0, 255, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-            font-size: 9px;
-            color: #FFFFFF;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            backdrop-filter: blur(10px);
-            z-index: 100;
-        }
-
-        .system-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            background: var(--dozon-green);
-            box-shadow: 0 0 10px var(--dozon-green);
-            animation: blink 2s infinite;
-            border-radius: 2px !important;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        #liveTime {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 10px;
-            letter-spacing: 1px;
-        }
-
-        /* --- TRON GRID EFFECT --- */
-        .tron-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 255, 0, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 0, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.3;
-        }
-
-        /* Modal styles */
-        .modal { 
-            display:none; 
-            position:fixed; 
-            inset:0; 
-            z-index:9999; 
-            align-items:center; 
-            justify-content:center; 
-            background:rgba(0,0,0,0.7); 
-            padding:15px; 
-            backdrop-filter: blur(5px);
-        }
-        .modal .box{
-            background: var(--darkgrey);
-            padding: 12px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid var(--dozon-green);
-            box-shadow: 0 0 25px var(--dozon-green);
-        }
-        .modal h3{font-size:16px;margin-bottom:8px; font-family: var(--font-futuristic); color: var(--dozon-green);}
-        .choice-row{
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: space-between;
-            padding: 6px;
-            border-radius: 6px;
-            background: var(--mediumgrey);
-            margin-bottom: 6px;
-            font-size: 11px;
-        }
-        .choice-row label{font-weight:700; font-family: var(--font-main);}
-
-        /* Payment locked message */
-        .locked-message {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid var(--danger-red);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 600px) {
-            .ecosystem-device {
-                width: 100%;
-                height: 100%;
-                max-width: 100%;
-                max-height: 100%;
-                border-radius: 0;
-            }
-            
-            .pod-header {
-                height: 80px;
-                padding: 10px 15px;
-            }
-            
-            .pod-title {
-                font-size: 14px;
-            }
-            
-            .mode-nav {
-                flex-wrap: wrap;
-            }
-            
-            .mode-tab {
-                min-width: 80px;
-                padding: 8px 3px;
-                font-size: 8px;
-            }
-            
-            .mode-tab i {
-                font-size: 10px;
-            }
-            
-            .content-panel {
-                padding: 15px;
-            }
-            
-            .become {
-                font-size: 22px;
-            }
-            
-            .become .blink-i {
-                font-size: 26px;
-            }
-            
-            .player-list {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width:520px){
+          .become{font-size:28px}.become .blink-i{font-size:38px}.frame{padding:14px}
+          .panel-title{font-size:18px}.timer{font-size:28px}
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
-    <canvas id="canvas-bg"></canvas>
+    <div class="cyber-grid"></div>
+    <div class="particles" id="particles"></div>
+    <div class="glow-line" style="width: 80%; left: 10%"></div>
+    <div class="glow-line" style="width: 60%; left: 20%; animation-delay: -2s"></div>
 
-    <!-- Main Device -->
-    <div class="ecosystem-device">
-        <!-- Tron Grid Effect -->
-        <div class="tron-grid"></div>
-        
-        <!-- DOZON Cyber Grid -->
-        <div class="cyber-grid"></div>
-        <div class="glow-line"></div>
-        <div class="glow-line" style="left: 20%; width: 60%; animation-delay: -2s"></div>
-        
-        <!-- Pod Header -->
-        <div class="pod-header">
-            <div class="pod-model-display">
-                <div class="pod-icon">
-                    <div class="dot"></div>
-                    <div class="dot"></div>
-                </div>
-                <div class="pod-status">
-                    <div class="pod-title">
-                        <span class="dozon-text">DOZON</span><span class="xyz-text">.XYZ</span>
-                    </div>
-                    <div class="pod-subtitle">
-                        <span>S</span>ecure <span>G</span>ame <span>A</span>rena
+    <div class="page">
+        <div class="frame" role="main" aria-label="Secure Game Arena">
+            <header class="topbar">
+                <div class="brand">
+                    <div class="logo">DO</div>
+                    <div style="color:var(--lightgrey);font-size:13px">DOZON.XYZ</div>
+                    <div class="security-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SECURE SESSION</span>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Live Stats -->
-            <div class="live-stats">
-                <div class="stat-box">
-                    <div class="stat-label">Players</div>
-                    <div class="stat-value" id="livePlayers">0</div>
+                <div class="fkey" title="Reset / F11">
+                    <div class="kbd">XXX</div>
+                    <div style="font-size:13px;color:var(--lightgrey)">FFF</div>
+                    <button id="globalReset" class="btn ghost" style="margin-left:8px">RESET</button>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-label">Scenes</div>
-                    <div class="stat-value" id="liveScenes">0</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">₹ Paid</div>
-                    <div class="stat-value" id="livePaid">0</div>
-                </div>
-            </div>
-        </div>
+            </header>
 
-        <!-- Navigation Tabs -->
-        <div class="mode-nav">
-            <div class="mode-tab active" onclick="switchPanel('welcome')">
-                <i class="fas fa-home"></i>
-                Welcome
-            </div>
-            <div class="mode-tab" onclick="switchPanel('account')">
-                <i class="fas fa-user"></i>
-                Account
-            </div>
-            <div class="mode-tab" onclick="switchPanel('profile')">
-                <i class="fas fa-id-card"></i>
-                Profile
-            </div>
-            <div class="mode-tab locked" id="gameTab" onclick="checkPaymentBeforeGame()">
-                <i class="fas fa-gamepad"></i>
-                Game
-            </div>
-            <div class="mode-tab" onclick="switchPanel('payment')">
-                <i class="fas fa-credit-card"></i>
-                Payment
-            </div>
-        </div>
-
-        <!-- Content Area -->
-        <div class="content-area">
-            <!-- Welcome Panel -->
-            <div class="content-panel active" id="welcomePanel">
-                <div class="frame">
-                    <header class="topbar">
-                        <div class="brand">
-                            <div class="logo">DO</div>
-                            <div style="color:var(--lightgrey);font-size:11px">DOZON.XYZ</div>
-                            <div class="security-badge">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>SECURE</span>
-                            </div>
-                        </div>
-                        <div class="fkey" title="Reset">
-                            <div class="kbd">F11</div>
-                            <div style="font-size:11px;color:var(--lightgrey)">RESET</div>
-                            <button class="btn ghost" id="globalReset" style="margin-left:8px">RESET</button>
-                        </div>
-                    </header>
-
-                    <div class="hero">
-                        <div>
-                            <div class="become">
-                                <div class="nothing">XPERIENCE</div>
-                                <div class="nothing">REAL</div>
-                                <div class="blink-i" id="blinkI" onclick="switchPanel('account')"><span class="bar">.XYZ</span></div>
-                            </div>
-                            <div class="mutedline">
-                                <span class="status-indicator status-online"></span>
-                                SAFE • SECURE • SELECTIVE
-                            </div>
-                            <div class="mutedline" style="margin-top: 10px;">
-                                <strong>SAFE:</strong> No personal data collection<br>
-                                <strong>SECURE:</strong> Encrypted session • No data stored • Browser-based security<br>
-                                <strong>SELECTIVE:</strong> You choose your tribe without external influence
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 15px;">
-                            <div class="panel">
-                                <div style="font-weight:800;font-size:13px;color:var(--lightgrey)">Quick Start</div>
-                                <div style="margin-top:8px">
-                                    <div class="small-muted">1. Create Account → Accept Rules</div>
-                                    <div class="small-muted">2. Complete Profile Setup</div>
-                                    <div class="small-muted">3. Make Payment (₹969 one-time fee)</div>
-                                    <div class="small-muted">4. UNLOCK GAME ACCESS</div>
-                                    <div class="small-muted">5. Add players, generate scene, PLAY!</div>
-                                </div>
-                                <div style="margin-top:12px" class="actions">
-                                    <button class="btn primary" onclick="switchPanel('account')">Begin Setup →</button>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Welcome Section -->
+            <div class="hero" id="welcomeSection">
+                <div>
+                    <div class="become">
+                        <div class="nothing">XPERIENCE</div>
+                        <div class="nothing">REAL</div>
+                        <div class="blink-i" id="blinkI"><span class="bar">.XYZ</span></div>
                     </div>
+                    <div class="mutedline">
+                        <span class="status-indicator status-online"></span>
+                        SAFE • SECURE • SELECTIVE
+                    </div>
+                    <div class="mutedline" style="margin-top: 15px; max-width: 600px;">
+                        <strong>SAFE:</strong> No personal data collection<br>
+                        <strong>SECURE:</strong> Encrypted session • No data stored • Browser-based security<br>
+                        <strong>SELECTIVE:</strong> You choose your tribe without external influence
+                    </div>
+                </div>
 
-                    <!-- Progress Steps -->
-                    <div class="progress-steps" id="progressSteps">
-                        <div class="step active" id="step1">
-                            <div class="step-number">1</div>
-                            <div class="step-label">Account</div>
+                <div style="width:340px">
+                    <div class="panel" style="padding:14px">
+                        <div style="font-weight:800;font-size:15px;color:var(--lightgrey)">Quick Start</div>
+                        <div style="margin-top:10px">
+                            <div class="small-muted">1. Click the blinking <strong>.XYZ</strong> → reveals game.</div>
+                            <div class="small-muted">2. Add players, generate scene.</div>
+                            <div class="small-muted">3. After scene generation assign <strong>Act</strong> or <strong>Watch</strong> for each participant, then PLAY.</div>
                         </div>
-                        <div class="step" id="step2">
-                            <div class="step-number">2</div>
-                            <div class="step-label">Profile</div>
-                        </div>
-                        <div class="step" id="step3">
-                            <div class="step-number">3</div>
-                            <div class="step-label">Payment</div>
-                        </div>
-                        <div class="step locked" id="step4">
-                            <div class="step-number">4</div>
-                            <div class="step-label">Game</div>
+                        <div style="margin-top:12px" class="actions">
+                            <button class="btn primary" id="quickBegin">Click to Begin</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Account Panel -->
-            <div class="content-panel" id="accountPanel">
-                <div class="frame">
-                    <div class="account-section">
-                        <div class="panel">
-                            <div class="panel-title">Account Setup</div>
-                            
-                            <div id="loginForm">
-                                <label for="loginUsername">Username</label>
-                                <input type="text" id="loginUsername" placeholder="Enter your username">
-                                
-                                <label for="loginPassword">Password</label>
-                                <input type="password" id="loginPassword" placeholder="Enter your password">
-                                
-                                <div class="controls">
-                                    <button class="btn primary" id="loginBtn">Login</button>
-                                    <button class="btn ghost" id="showRegisterBtn">Create Account</button>
-                                </div>
-                            </div>
-                            
-                            <div id="registerForm" style="display:none">
-                                <label for="registerUsername">Username</label>
-                                <input type="text" id="registerUsername" placeholder="Choose a username">
-                                
-                                <label for="registerPassword">Password</label>
-                                <input type="password" id="registerPassword" placeholder="Create a secure password">
-                                
-                                <label for="registerConfirmPassword">Confirm Password</label>
-                                <input type="password" id="registerConfirmPassword" placeholder="Confirm your password">
-                                
-                                <div class="controls">
-                                    <button class="btn primary" id="registerBtn">Create Account</button>
-                                    <button class="btn ghost" id="showLoginBtn">Back to Login</button>
-                                </div>
-                            </div>
-                            
-                            <div class="small-muted">
-                                <i class="fas fa-lock"></i> All activities happen on a remote server. Nothing is stored on your local device.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Rules Section -->
-                    <div class="rules-section" style="margin-top: 15px;">
-                        <div class="panel">
-                            <div class="panel-title">Rules & Guidelines</div>
-                            
-                            <div style="max-height: 200px; overflow-y: auto; padding: 8px;">
-                                <h4 style="color: var(--dozon-green); margin-bottom: 10px;">Please read carefully:</h4>
-                                
-                                <div style="margin-bottom: 12px;">
-                                    <h5 style="color: var(--xyz-violet); margin-bottom: 5px;">1. Payment Required</h5>
-                                    <p style="font-size: 11px;">Game access requires a one-time payment of ₹969. This is a lifetime membership fee.</p>
-                                </div>
-                                
-                                <div style="margin-bottom: 12px;">
-                                    <h5 style="color: var(--xyz-violet); margin-bottom: 5px;">2. Data Security</h5>
-                                    <p style="font-size: 11px;">All activities happen on a secure remote server. No personal data is stored on your local device.</p>
-                                </div>
-                                
-                                <div style="margin-bottom: 12px;">
-                                    <h5 style="color: var(--xyz-violet); margin-bottom: 5px;">3. Session Privacy</h5>
-                                    <p style="font-size: 11px;">Your session is encrypted end-to-end. We don't collect or store personal information.</p>
-                                </div>
-                                
-                                <div style="margin-bottom: 12px;">
-                                    <h5 style="color: var(--xyz-violet); margin-bottom: 5px;">4. Community Guidelines</h5>
-                                    <p style="font-size: 11px;">Respect all participants. Harassment or inappropriate behavior will result in immediate removal.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="controls">
-                                <button class="btn primary" id="acceptRules">I Accept & Continue to Profile</button>
-                                <button class="btn ghost" onclick="switchPanel('welcome')">Back</button>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Progress Steps -->
+            <div class="progress-steps" id="progressSteps" style="display: none;">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Login</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Rules</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Profile</div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">My DOZON</div>
+                </div>
+                <div class="step" id="step5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Payment</div>
+                </div>
+                <div class="step" id="step6">
+                    <div class="step-number">6</div>
+                    <div class="step-label">Game</div>
                 </div>
             </div>
 
-            <!-- Profile Panel -->
-            <div class="content-panel" id="profilePanel">
-                <div class="frame">
-                    <div class="profile-section">
-                        <div class="panel">
-                            <div class="panel-title">Create Your Persona</div>
-                            <p class="small-muted">Answering all questions is mandatory to create your profile.</p>
+            <!-- Account Section -->
+            <div class="account-section" id="accountSection">
+                <div class="game-grid">
+                    <div class="panel" aria-label="Account Management">
+                        <div class="panel-title">Account Setup</div>
+                        
+                        <div id="loginForm">
+                            <label for="loginUsername">Username</label>
+                            <input type="text" id="loginUsername" placeholder="Enter your username">
                             
-                            <div style="max-height: 250px; overflow-y: auto; padding: 8px;">
-                                <label for="userGender">Gender</label>
-                                <select id="userGender">
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                
-                                <label for="userAge">Age</label>
-                                <input type="text" id="userAge" placeholder="Enter your age">
-                                
-                                <label for="userBodyType">Body Type</label>
-                                <select id="userBodyType">
-                                    <option value="">Select Body Type</option>
-                                    <option value="slim">Slim</option>
-                                    <option value="athletic">Athletic</option>
-                                    <option value="average">Average</option>
-                                    <option value="muscular">Muscular</option>
-                                    <option value="curvy">Curvy</option>
-                                </select>
-                                
-                                <label for="userPurpose">Purpose</label>
-                                <select id="userPurpose">
-                                    <option value="">Select Purpose</option>
-                                    <option value="virtual">Virtual Experience</option>
-                                    <option value="real">Real Connection</option>
-                                    <option value="both">Both</option>
-                                </select>
-                                
-                                <label for="userInterests">Interests</label>
-                                <textarea id="userInterests" placeholder="Describe your interests, hobbies, etc." rows="2"></textarea>
-                                
-                                <label for="userPersonality">Personality Type</label>
-                                <select id="userPersonality">
-                                    <option value="">Select Personality Type</option>
-                                    <option value="introvert">Introvert</option>
-                                    <option value="extrovert">Extrovert</option>
-                                    <option value="ambivert">Ambivert</option>
-                                </select>
-                            </div>
+                            <label for="loginPassword" style="margin-top:8px">Password</label>
+                            <input type="password" id="loginPassword" placeholder="Enter your password">
                             
-                            <div class="controls">
-                                <button class="btn primary" id="saveProfile">Save Profile & Continue to Payment</button>
-                                <button class="btn ghost" onclick="switchPanel('account')">Back</button>
+                            <div class="controls" style="margin-top:12px">
+                                <button class="btn primary" id="loginBtn">Login</button>
+                                <button class="btn ghost" id="showRegisterBtn">Create Account</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Game Panel -->
-            <div class="content-panel" id="gamePanel">
-                <div class="frame">
-                    <div class="locked-message" id="gameLockedMessage" style="display: none;">
-                        <i class="fas fa-lock" style="color: var(--danger-red); margin-right: 8px;"></i>
-                        <strong>GAME ACCESS LOCKED</strong> - Complete payment to unlock game features
-                        <button class="btn primary" onclick="switchPanel('payment')" style="margin-left: 10px; padding: 6px 10px; font-size: 10px;">Go to Payment</button>
+                        
+                        <div id="registerForm" style="display:none">
+                            <label for="registerUsername">Username</label>
+                            <input type="text" id="registerUsername" placeholder="Choose a username">
+                            
+                            <label for="registerPassword" style="margin-top:8px">Password</label>
+                            <input type="password" id="registerPassword" placeholder="Create a secure password">
+                            
+                            <label for="registerConfirmPassword" style="margin-top:8px">Confirm Password</label>
+                            <input type="password" id="registerConfirmPassword" placeholder="Confirm your password">
+                            
+                            <div class="controls" style="margin-top:12px">
+                                <button class="btn primary" id="registerBtn">Create Account</button>
+                                <button class="btn ghost" id="showLoginBtn">Back to Login</button>
+                            </div>
+                        </div>
+                        
+                        <div class="small-muted" style="margin-top:16px">
+                            <i class="fas fa-lock"></i> All activities happen on a remote server. Nothing is stored on your local device.
+                        </div>
                     </div>
                     
-                    <div id="gameContent" style="display: none;">
-                        <div class="game-shell">
-                            <div class="game-grid">
-                                <div class="panel">
-                                    <div class="panel-title">Player Setup</div>
-
-                                    <label for="playerName">Your Name (U-ID)</label>
-                                    <input type="text" id="playerName" placeholder="Enter your unique name">
-
-                                    <label>Gender</label>
-                                    <div style="display:flex;gap:6px;margin-bottom:8px">
-                                        <button class="btn ghost genderBtn" data-gender="male">Male</button>
-                                        <button class="btn ghost genderBtn" data-gender="female">Female</button>
-                                        <button class="btn ghost genderBtn" data-gender="other">Other</button>
-                                    </div>
-                                    <input type="hidden" id="playerGender" value="male">
-
-                                    <label>Your 3 DO Actions</label>
-                                    <input type="text" id="do1" placeholder="Do action 1" />
-                                    <input type="text" id="do2" placeholder="Do action 2" />
-                                    <input type="text" id="do3" placeholder="Do action 3" />
-                                    <div class="controls">
-                                        <button class="btn ghost" id="randomDoBtn">Random DOs</button>
-                                    </div>
-
-                                    <label>Your 3 DON'T Rules</label>
-                                    <input type="text" id="dont1" placeholder="Don't rule 1" />
-                                    <input type="text" id="dont2" placeholder="Don't rule 2" />
-                                    <input type="text" id="dont3" placeholder="Don't rule 3" />
-                                    <div class="controls">
-                                        <button class="btn ghost" id="randomDontBtn">Random DON'Ts</button>
-                                    </div>
-
-                                    <div class="controls">
-                                        <button class="btn primary" id="saveBtn">Save Player</button>
-                                        <button class="btn ghost" id="resetBtn">Reset Game</button>
-                                    </div>
-
-                                    <div style="margin-top:12px">
-                                        <label>Players (Max: 12)</label>
-                                        <div class="player-list" id="playerList"></div>
-                                    </div>
-                                </div>
-
-                                <div class="panel">
-                                    <div class="panel-title">Game Arena</div>
-
-                                    <label for="participants">Number of Participants</label>
-                                    <select id="participants">
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4" selected>4</option>
-                                        <option value="6">6</option>
-                                        <option value="8">8</option>
-                                        <option value="12">12</option>
-                                    </select>
-
-                                    <label>Scene Duration (seconds)</label>
-                                    <input type="number" id="sceneDuration" value="180" min="30" max="600">
-
-                                    <div class="controls">
-                                        <button class="btn primary" id="generateBtn">Generate Scene</button>
-                                        <button class="btn ghost" id="openAssignBtn">Assign Act/Watch</button>
-                                        <button class="btn primary" id="startBtn">Start Scene</button>
-                                        <button class="btn ghost" id="endBtn">End Scene</button>
-                                    </div>
-
-                                    <div class="scene-container">
-                                        <div class="scene-title">Current Scene</div>
-                                        <div class="scene-content" id="sceneContent"><p style="margin:0">No active scene. Generate a scene to begin.</p></div>
-
-                                        <div class="timer" id="timer">03:00</div>
-
-                                        <table class="points-table">
-                                            <thead>
-                                                <tr><th>Player</th><th>Gender</th><th>Points</th><th>Status</th></tr>
-                                            </thead>
-                                            <tbody id="pointsTableBody"></tbody>
-                                        </table>
-                                        <div class="small-muted">Note: ACT = <strong>10 pts</strong>, WATCH = <strong>1 pt</strong>. Assign choices before PLAY.</div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="panel" aria-label="Account Status">
+                        <div class="panel-title">Account Status</div>
+                        
+                        <div id="accountStatus" style="text-align:center; padding: 20px 0;">
+                            <div style="font-size: 18px; margin-bottom: 10px;">No Active Session</div>
+                            <div class="small-muted">Login or create an account to continue</div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Payment Panel -->
-            <div class="content-panel" id="paymentPanel">
-                <div class="frame">
-                    <div class="payment-section">
-                        <div class="panel">
-                            <div class="panel-title">Secure Payment Gateway</div>
-                            
-                            <div class="payment-info">
-                                <div style="text-align:center; margin-bottom:10px">
-                                    <div style="font-size:11px;color:var(--lightgrey)">One-Time Membership Fee</div>
-                                    <div class="payment-amount">₹ 969</div>
-                                    <div style="font-size:11px;color:var(--lightgrey)">Lifetime Access • Required for Game</div>
+                        
+                        <div id="loggedInStatus" style="display:none">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+                                <div>
+                                    <div style="font-size:14px;color:var(--lightgrey)">Logged in as:</div>
+                                    <div style="font-size:18px;font-weight:700" id="loggedInUser"></div>
                                 </div>
-                                
-                                <div class="payment-features">
-                                    <ul style="list-style-type:none; padding-left: 0;">
-                                        <li>Unlock full game access</li>
-                                        <li>Join games with 11 other players</li>
-                                        <li>Create and customize player profiles</li>
-                                        <li>Generate unlimited scenes</li>
-                                        <li>Secure, browser-based encryption</li>
-                                        <li>No data stored on servers</li>
-                                        <li>Lifetime membership - no recurring fees</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <label for="paymentMethod">Payment Method</label>
-                            <select id="paymentMethod">
-                                <option value="upi">UPI Payment</option>
-                                <option value="card">Credit/Debit Card</option>
-                                <option value="netbanking">Net Banking</option>
-                                <option value="wallet">Digital Wallet</option>
-                            </select>
-                            
-                            <div id="paymentDetails">
-                                <div style="margin-top:10px">
-                                    <label for="upiId">UPI ID</label>
-                                    <input type="text" id="upiId" placeholder="yourname@upi">
+                                <div>
+                                    <div style="font-size:14px;color:var(--lightgrey)">Status:</div>
+                                    <div id="paymentStatus" style="font-size:18px;font-weight:700;color:var(--lightgrey)">UNPAID</div>
                                 </div>
                             </div>
                             
                             <div class="controls">
-                                <button class="btn primary" id="processPayment">Process Payment (₹969)</button>
-                                <button class="btn ghost" onclick="switchPanel('profile')">Back</button>
-                            </div>
-                            
-                            <div class="small-muted" style="text-align:center">
-                                <i class="fas fa-lock"></i> This is a secure payment. Your financial details are encrypted.
+                                <button class="btn primary" id="proceedToRules">Proceed to Rules</button>
+                                <button class="btn ghost" id="logoutBtn">Logout</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Status Bar -->
-        <div class="status-bar">
-            <div class="system-status">
-                <div class="status-dot"></div>
-                <span>DOZON.XYZ: <span id="gameStatus">SETUP REQUIRED</span></span>
+            <!-- Rules Section -->
+            <div class="rules-section" id="rulesSection">
+                <div class="panel">
+                    <div class="panel-title">Rules & Guidelines</div>
+                    
+                    <div style="max-height: 400px; overflow-y: auto; padding: 10px;">
+                        <h3 style="color: var(--accent); margin-bottom: 15px;">Please read carefully before proceeding:</h3>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: var(--rose-gold); margin-bottom: 10px;">1. Data Security</h4>
+                            <p>All activities happen on a secure remote server. No personal data is stored on your local device.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: var(--rose-gold); margin-bottom: 10px;">2. Session Privacy</h4>
+                            <p>Your session is encrypted end-to-end. We don't collect or store personal information.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: var(--rose-gold); margin-bottom: 10px;">3. Community Guidelines</h4>
+                            <p>Respect all participants. Harassment or inappropriate behavior will result in immediate removal.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: var(--rose-gold); margin-bottom: 10px;">4. Content Responsibility</h4>
+                            <p>You are responsible for the content you create and share during sessions.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: var(--rose-gold); margin-bottom: 10px;">5. Technical Requirements</h4>
+                            <p>Ensure you have a stable internet connection for optimal experience.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="controls" style="margin-top: 20px;">
+                        <button class="btn primary" id="acceptRules">I Accept & Continue</button>
+                        <button class="btn ghost" id="backToAccount">Back</button>
+                    </div>
+                </div>
             </div>
-            <div id="liveTime">00:00:00</div>
-            <div>PLAYERS: <span id="playerCount">0</span> / 12</div>
-        </div>
-    </div>
 
-    <!-- Modals -->
-    <div class="modal" id="assignModal">
-        <div class="box">
-            <h3>Assign: Act or Watch</h3>
-            <p class="small-muted">Choose for each participant whether they will ACT (10 pts) or WATCH (1 pt). Defaults to WATCH.</p>
-            <div id="assignList" style="margin-top:10px;max-height:250px;overflow:auto"></div>
-            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-                <button class="btn ghost" id="assignCancel">Cancel</button>
-                <button class="btn primary" id="assignConfirm">Confirm & Play</button>
+            <!-- Profile Section -->
+            <div class="profile-section" id="profileSection">
+                <div class="panel">
+                    <div class="panel-title">Create Your Persona</div>
+                    <p class="small-muted" style="margin-bottom: 20px;">Answering all questions is mandatory to create your profile.</p>
+                    
+                    <div style="max-height: 400px; overflow-y: auto; padding: 10px;">
+                        <label for="userGender">Gender</label>
+                        <select id="userGender">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        
+                        <label for="userAge">Age</label>
+                        <input type="text" id="userAge" placeholder="Enter your age">
+                        
+                        <label for="userBodyType">Body Type</label>
+                        <select id="userBodyType">
+                            <option value="">Select Body Type</option>
+                            <option value="slim">Slim</option>
+                            <option value="athletic">Athletic</option>
+                            <option value="average">Average</option>
+                            <option value="muscular">Muscular</option>
+                            <option value="curvy">Curvy</option>
+                        </select>
+                        
+                        <label for="userPurpose">Purpose</label>
+                        <select id="userPurpose">
+                            <option value="">Select Purpose</option>
+                            <option value="virtual">Virtual Experience</option>
+                            <option value="real">Real Connection</option>
+                            <option value="both">Both</option>
+                        </select>
+                        
+                        <label for="userInterests">Interests</label>
+                        <textarea id="userInterests" placeholder="Describe your interests, hobbies, etc." rows="3"></textarea>
+                        
+                        <label for="userPersonality">Personality Type</label>
+                        <select id="userPersonality">
+                            <option value="">Select Personality Type</option>
+                            <option value="introvert">Introvert</option>
+                            <option value="extrovert">Extrovert</option>
+                            <option value="ambivert">Ambivert</option>
+                        </select>
+                        
+                        <label for="userExperience">Previous Gaming Experience</label>
+                        <select id="userExperience">
+                            <option value="">Select Experience Level</option>
+                            <option value="none">None</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                    </div>
+                    
+                    <div class="controls" style="margin-top: 20px;">
+                        <button class="btn primary" id="saveProfile">Save Profile & Continue</button>
+                        <button class="btn ghost" id="backToRules">Back</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="modal" id="resultModal">
-        <div class="box">
-            <h3>Scene Complete</h3>
-            <div id="resultText"></div>
-            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-                <button class="btn primary" id="resultClose">Continue</button>
+            <!-- My DOZON Section -->
+            <div class="my-dozon-section" id="myDozonSection">
+                <div class="game-grid">
+                    <div class="panel" aria-label="Activity Setup">
+                        <div class="panel-title">My DOZON</div>
+                        
+                        <label for="activityCity">City of Activity</label>
+                        <select id="activityCity">
+                            <option value="">Select City</option>
+                            <option value="AMS">Amsterdam (AMS)</option>
+                            <option value="LON">London (LON)</option>
+                            <option value="NYC">New York (NYC)</option>
+                            <option value="PAR">Paris (PAR)</option>
+                            <option value="TOK">Tokyo (TOK)</option>
+                            <option value="SYD">Sydney (SYD)</option>
+                            <option value="DEL">Delhi (DEL)</option>
+                            <option value="SIN">Singapore (SIN)</option>
+                        </select>
+                        
+                        <label for="activityDate">Date of Activity</label>
+                        <input type="date" id="activityDate">
+                        
+                        <div class="controls" style="margin-top: 20px;">
+                            <button class="btn primary" id="checkGroups">Check for Groups</button>
+                            <button class="btn ghost" id="backToProfile">Back</button>
+                        </div>
+                    </div>
+                    
+                    <div class="panel" aria-label="Profile Preview">
+                        <div class="panel-title">Your Profile</div>
+                        
+                        <div id="profilePreview" style="text-align:center; padding: 20px 0;">
+                            <div style="font-size: 14px; margin-bottom: 10px;">Profile not created yet</div>
+                        </div>
+                        
+                        <div id="profileDetails" style="display:none">
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div><strong>Gender:</strong> <span id="previewGender"></span></div>
+                                <div><strong>Age:</strong> <span id="previewAge"></span></div>
+                                <div><strong>Body Type:</strong> <span id="previewBodyType"></span></div>
+                                <div><strong>Purpose:</strong> <span id="previewPurpose"></span></div>
+                                <div><strong>Personality:</strong> <span id="previewPersonality"></span></div>
+                                <div><strong>Experience:</strong> <span id="previewExperience"></span></div>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <strong>Interests:</strong> <span id="previewInterests"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="modal" id="paymentSuccessModal">
-        <div class="box">
-            <h3>Payment Successful!</h3>
-            <div style="text-align:center; padding:15px 0">
-                <i class="fas fa-check-circle" style="font-size:36px; color:var(--dozon-green); margin-bottom:12px"></i>
-                <p>Your payment of ₹ 969 has been processed successfully.</p>
-                <p><strong>Game access is now UNLOCKED!</strong></p>
-                <p>You now have full access to the DOZON.XYZ Game Arena.</p>
+            <!-- Group Dashboard Section -->
+            <div class="group-dashboard-section" id="groupDashboardSection">
+                <div class="panel">
+                    <div class="panel-title">Available Groups in <span id="groupCityName"></span></div>
+                    
+                    <div id="groupsList" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;">
+                        <!-- Groups will be dynamically added here -->
+                    </div>
+                    
+                    <div class="controls">
+                        <button class="btn primary" id="joinGroup">Join Selected Group</button>
+                        <button class="btn ghost" id="createNewGroup">Create New Group</button>
+                        <button class="btn ghost" id="backToMyDozon">Back</button>
+                    </div>
+                </div>
             </div>
-            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-                <button class="btn primary" id="paymentSuccessClose">Start Playing</button>
+
+            <!-- Create Group Section -->
+            <div class="create-group-section" id="createGroupSection">
+                <div class="panel">
+                    <div class="panel-title">Create New Group</div>
+                    
+                    <div id="groupInfo">
+                        <p>You're creating a new group in <strong id="createGroupCity"></strong>.</p>
+                        <p>Group name: <strong id="newGroupName"></strong></p>
+                    </div>
+                    
+                    <label for="groupDescription">Group Description (Optional)</label>
+                    <textarea id="groupDescription" placeholder="Describe your group's purpose or theme" rows="3"></textarea>
+                    
+                    <div class="controls" style="margin-top: 20px;">
+                        <button class="btn primary" id="confirmCreateGroup">Create Group</button>
+                        <button class="btn ghost" id="backToGroupDashboard">Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="payment-section" id="paymentSection">
+                <div class="panel">
+                    <div class="panel-title">Secure Payment Gateway</div>
+                    
+                    <div class="payment-info">
+                        <div style="text-align:center; margin-bottom:16px">
+                            <div style="font-size:14px;color:var(--lightgrey)">One-Time Membership Fee</div>
+                            <div class="payment-amount">₹ 969</div>
+                            <div style="font-size:14px;color:var(--lightgrey)">Lifetime Access</div>
+                        </div>
+                        
+                        <div class="payment-features">
+                            <ul style="list-style-type:none">
+                                <li>Access to all game features</li>
+                                <li>Join games with 11 other players</li>
+                                <li>Create and customize player profiles</li>
+                                <li>Secure, browser-based encryption</li>
+                                <li>No data stored on servers</li>
+                                <li>Lifetime membership - no recurring fees</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <label for="paymentMethod">Payment Method</label>
+                    <select id="paymentMethod">
+                        <option value="upi">UPI Payment</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="netbanking">Net Banking</option>
+                        <option value="wallet">Digital Wallet</option>
+                    </select>
+                    
+                    <div id="paymentDetails">
+                        <div style="margin-top:16px">
+                            <label for="upiId">UPI ID</label>
+                            <input type="text" id="upiId" placeholder="yourname@upi">
+                        </div>
+                    </div>
+                    
+                    <div class="controls" style="margin-top:16px">
+                        <button class="btn primary" id="processPayment">Process Payment</button>
+                        <button class="btn ghost" id="cancelPayment">Cancel</button>
+                    </div>
+                    
+                    <div class="small-muted" style="margin-top:16px; text-align:center">
+                        <i class="fas fa-lock"></i> This is a secure payment. Your financial details are encrypted and processed securely.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Section -->
+            <div class="game-shell" id="gameShell" aria-hidden="true">
+                <div class="game-grid">
+                    <div class="panel" aria-label="Player Setup Panel">
+                        <div class="panel-title">Player Setup</div>
+
+                        <label for="playerName">Your Name (U-ID)</label>
+                        <input type="text" id="playerName" placeholder="Enter your unique name" aria-label="Player name">
+
+                        <label style="margin-top:8px">Gender</label>
+                        <div style="display:flex;gap:8px;margin-bottom:8px">
+                            <button class="btn ghost genderBtn" data-gender="male">Male</button>
+                            <button class="btn ghost genderBtn" data-gender="female">Female</button>
+                            <button class="btn ghost genderBtn" data-gender="other">Other</button>
+                        </div>
+                        <input type="hidden" id="playerGender" value="male">
+
+                        <label style="margin-top:8px">Your 3 DO Actions</label>
+                        <input type="text" id="do1" placeholder="Do action 1" class="" />
+                        <input type="text" id="do2" placeholder="Do action 2" />
+                        <input type="text" id="do3" placeholder="Do action 3" />
+                        <div class="controls">
+                            <button class="btn ghost" id="randomDoBtn">Random DOs</button>
+                        </div>
+
+                        <label style="margin-top:8px">Your 3 DON'T Rules</label>
+                        <input type="text" id="dont1" placeholder="Don't rule 1" />
+                        <input type="text" id="dont2" placeholder="Don't rule 2" />
+                        <input type="text" id="dont3" placeholder="Don't rule 3" />
+                        <div class="controls">
+                            <button class="btn ghost" id="randomDontBtn">Random DON'Ts</button>
+                        </div>
+
+                        <div class="controls" style="margin-top:12px">
+                            <button class="btn primary" id="saveBtn">Save Player</button>
+                            <button class="btn ghost" id="resetBtn">Reset Game</button>
+                        </div>
+
+                        <div style="margin-top:14px">
+                            <label>Players (Max: 12)</label>
+                            <div class="player-list" id="playerList" aria-live="polite">
+                                <!-- Player cards will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel" aria-label="Game Arena Panel">
+                        <div class="panel-title">Game Arena</div>
+
+                        <label for="participants">Number of Participants</label>
+                        <select id="participants" aria-label="Number of participants">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4" selected>4</option>
+                            <option value="6">6</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                        </select>
+
+                        <label style="margin-top:8px">Scene Duration (seconds)</label>
+                        <input type="number" id="sceneDuration" value="180" min="30" max="600">
+
+                        <div class="controls">
+                            <button class="btn primary" id="generateBtn">Generate Scene</button>
+                            <button class="btn ghost" id="openAssignBtn">Assign Act/Watch</button>
+                            <button class="btn ghost" id="startBtn">Start Scene</button>
+                            <button class="btn ghost" id="endBtn">End Scene</button>
+                        </div>
+
+                        <div class="scene-container" style="margin-top:12px">
+                            <div class="scene-title">Current Scene</div>
+                            <div class="scene-content" id="sceneContent"><p style="margin:0">No active scene. Generate a scene to begin.</p></div>
+
+                            <div class="timer" id="timer">03:00</div>
+
+                            <table class="points-table" aria-label="Points table">
+                                <thead>
+                                    <tr><th>Player</th><th>Gender</th><th>Points</th><th>Status</th></tr>
+                                </thead>
+                                <tbody id="pointsTableBody"></tbody>
+                            </table>
+                            <div class="small-muted">Note: ACT = <strong>10 pts</strong>, WATCH = <strong>1 pt</strong>. Assign choices before PLAY to confirm.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modals -->
+            <div class="modal" id="assignModal" aria-hidden="true" role="dialog" aria-modal="true">
+                <div class="box">
+                    <h3>Assign: Act or Watch</h3>
+                    <p class="small-muted">Choose for each participant whether they will ACT (10 pts) or WATCH (1 pt). Defaults to WATCH.</p>
+                    <div id="assignList" style="margin-top:12px;max-height:360px;overflow:auto"></div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+                        <button class="btn ghost" id="assignCancel">Cancel</button>
+                        <button class="btn primary" id="assignConfirm">Confirm & Play</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="resultModal" aria-hidden="true">
+                <div class="box">
+                    <h3>Scene Complete</h3>
+                    <div id="resultText"></div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+                        <button class="btn primary" id="resultClose">Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="paymentSuccessModal" aria-hidden="true">
+                <div class="box">
+                    <h3>Payment Successful!</h3>
+                    <div style="text-align:center; padding:20px 0">
+                        <i class="fas fa-check-circle" style="font-size:48px; color:var(--accent); margin-bottom:16px"></i>
+                        <p>Your payment of ₹ 969 has been processed successfully.</p>
+                        <p>You now have full access to the DOZON.XYZ Game Arena.</p>
+                    </div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+                        <button class="btn primary" id="paymentSuccessClose">Start Playing</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="exitModal" aria-hidden="true">
+                <div class="box">
+                    <h3>Safe Exit</h3>
+                    <div style="text-align:center; padding:20px 0">
+                        <i class="fas fa-sign-out-alt" style="font-size:48px; color:var(--accent); margin-bottom:16px"></i>
+                        <p>Thank you for using DOZON.XYZ</p>
+                        <p>Your session has been securely closed.</p>
+                        <p>All data has been cleared from your browser.</p>
+                    </div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+                        <button class="btn primary" id="exitConfirm">Exit</button>
+                        <button class="btn ghost" id="exitCancel">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        /***** GAME STATE *****/
-        let players = [];
-        let currentScene = null;
-        let timerInterval = null;
-        let timeRemaining = 180;
-        let currentUser = null;
-        let userPaid = false; // Payment status
-        let userProfile = null;
-        let totalPlayers = 0;
-        let totalScenes = 0;
-        let totalPaid = 0;
-
-        // Random DOs and DON'Ts
+        /***** Data & Initialization *****/
+        
+        // Particle creation function
+        function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+            for(let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = particle.style.height = 
+                    Math.random() * 4 + 2 + 'px';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        // Some random DOs and DON'Ts
         const randomDOs = [
-            "Share a short confident story about your proudest moment",
-            "Perform an expressive gesture to show leadership",
-            "Deliver a quick 30-second pitch about a dream product",
-            "Lead a group cheer for 20 seconds",
-            "Describe your most inspiring idea in 2 sentences",
-            "Act out a heroic entrance",
-            "Recite a short motivational line",
-            "Show a memorable facial expression for a scene"
+          "Share a short confident story about your proudest moment",
+          "Perform an expressive gesture to show leadership",
+          "Deliver a quick 30-second pitch about a dream product",
+          "Lead a group cheer for 20 seconds",
+          "Describe your most inspiring idea in 2 sentences",
+          "Act out a heroic entrance",
+          "Recite a short motivational line",
+          "Show a memorable facial expression for a scene",
+          "Demonstrate one supportive gesture to the group",
+          "Show how you'd close a great deal in 15 seconds"
         ];
 
         const randomDONTs = [
-            "Don't touch anyone without explicit permission",
-            "Don't use explicit sexual language",
-            "Don't remove any clothing",
-            "Don't make anyone feel uncomfortable",
-            "Don't pressure anyone into doing something",
-            "Don't break character during the scene",
-            "Don't share personal information that's too private",
-            "Don't make inappropriate physical contact"
+          "Don't touch anyone without explicit permission",
+          "Don't use explicit sexual language",
+          "Don't remove any clothing",
+          "Don't make anyone feel uncomfortable",
+          "Don't pressure anyone into doing something",
+          "Don't break character during the scene",
+          "Don't share personal information that's too private",
+          "Don't make inappropriate physical contact",
+          "Don't ignore someone's established boundaries",
+          "Don't break eye contact during a key moment"
         ];
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            initCanvas();
-            updateTime();
-            updateStats();
-            initializeGame();
-            
-            // Set initial gender button
-            document.querySelector('.genderBtn[data-gender="male"]').classList.add('selected');
-            
-            // Initialize game panel based on payment status
-            updateGameAccess();
-        });
+        // Game state
+        let players = []; // {name, gender, doActions[], dontRules[], points, performing}
+        let currentScene = null;
+        let timerInterval = null;
+        let timeRemaining = 180;
+        
+        // Account state
+        let currentUser = null;
+        let userPaid = false;
+        let userProfile = null;
+        let selectedCity = null;
+        let currentStep = 0;
 
-        // Update game access based on payment
-        function updateGameAccess() {
-            const gameTab = document.getElementById('gameTab');
-            const gameLockedMessage = document.getElementById('gameLockedMessage');
-            const gameContent = document.getElementById('gameContent');
-            const step4 = document.getElementById('step4');
-            
-            if (userPaid) {
-                // Unlock game
-                gameTab.classList.remove('locked');
-                gameTab.classList.add('active');
-                gameTab.onclick = () => switchPanel('game');
-                gameLockedMessage.style.display = 'none';
-                gameContent.style.display = 'block';
-                step4.classList.remove('locked');
-                step4.classList.add('active');
-                document.getElementById('gameStatus').textContent = 'READY';
-            } else {
-                // Lock game
-                gameTab.classList.add('locked');
-                gameTab.classList.remove('active');
-                gameLockedMessage.style.display = 'block';
-                gameContent.style.display = 'none';
-                step4.classList.add('locked');
-                step4.classList.remove('active');
-                document.getElementById('gameStatus').textContent = 'PAYMENT REQUIRED';
-            }
-        }
+        // DOM refs
+        const welcomeSection = document.getElementById('welcomeSection');
+        const progressSteps = document.getElementById('progressSteps');
+        const blinkI = document.getElementById('blinkI');
+        const quickBegin = document.getElementById('quickBegin');
+        const gameShell = document.getElementById('gameShell');
+        const globalReset = document.getElementById('globalReset');
+        const accountSection = document.getElementById('accountSection');
+        const rulesSection = document.getElementById('rulesSection');
+        const profileSection = document.getElementById('profileSection');
+        const myDozonSection = document.getElementById('myDozonSection');
+        const groupDashboardSection = document.getElementById('groupDashboardSection');
+        const createGroupSection = document.getElementById('createGroupSection');
+        const paymentSection = document.getElementById('paymentSection');
 
-        // Check payment before accessing game
-        function checkPaymentBeforeGame() {
-            if (!userPaid) {
-                alert('Payment Required: Please complete the payment of ₹969 to unlock game features.');
-                switchPanel('payment');
-                return false;
-            }
-            switchPanel('game');
-            return true;
-        }
+        // Account elements
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const showRegisterBtn = document.getElementById('showRegisterBtn');
+        const showLoginBtn = document.getElementById('showLoginBtn');
+        const accountStatus = document.getElementById('accountStatus');
+        const loggedInStatus = document.getElementById('loggedInStatus');
+        const loggedInUser = document.getElementById('loggedInUser');
+        const paymentStatus = document.getElementById('paymentStatus');
+        const proceedToRules = document.getElementById('proceedToRules');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // Rules elements
+        const acceptRules = document.getElementById('acceptRules');
+        const backToAccount = document.getElementById('backToAccount');
+        
+        // Profile elements
+        const saveProfile = document.getElementById('saveProfile');
+        const backToRules = document.getElementById('backToRules');
+        const profilePreview = document.getElementById('profilePreview');
+        const profileDetails = document.getElementById('profileDetails');
+        
+        // My DOZON elements
+        const checkGroups = document.getElementById('checkGroups');
+        const backToProfile = document.getElementById('backToProfile');
+        const activityCity = document.getElementById('activityCity');
+        const activityDate = document.getElementById('activityDate');
+        
+        // Group elements
+        const groupsList = document.getElementById('groupsList');
+        const joinGroup = document.getElementById('joinGroup');
+        const createNewGroup = document.getElementById('createNewGroup');
+        const backToMyDozon = document.getElementById('backToMyDozon');
+        const confirmCreateGroup = document.getElementById('confirmCreateGroup');
+        const backToGroupDashboard = document.getElementById('backToGroupDashboard');
+        const groupCityName = document.getElementById('groupCityName');
+        const createGroupCity = document.getElementById('createGroupCity');
+        const newGroupName = document.getElementById('newGroupName');
+        
+        // Payment elements
+        const paymentMethod = document.getElementById('paymentMethod');
+        const paymentDetails = document.getElementById('paymentDetails');
+        const processPayment = document.getElementById('processPayment');
+        const cancelPayment = document.getElementById('cancelPayment');
+        const paymentSuccessModal = document.getElementById('paymentSuccessModal');
+        const paymentSuccessClose = document.getElementById('paymentSuccessClose');
+        
+        // Exit modal
+        const exitModal = document.getElementById('exitModal');
+        const exitConfirm = document.getElementById('exitConfirm');
+        const exitCancel = document.getElementById('exitCancel');
 
-        // Panel switching
-        function switchPanel(panelId) {
-            // Update active tab
-            document.querySelectorAll('.mode-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Find and activate the clicked tab
-            document.querySelectorAll('.mode-tab').forEach(tab => {
-                if (tab.textContent.toLowerCase().includes(panelId.toLowerCase())) {
-                    tab.classList.add('active');
-                }
-            });
-            
-            // Special handling for game tab
-            if (panelId === 'game' && !userPaid) {
-                panelId = 'payment';
-                document.getElementById('gameTab').classList.remove('active');
-                document.querySelector('.mode-tab[onclick*="payment"]').classList.add('active');
-            }
-            
-            // Update active panel
-            document.querySelectorAll('.content-panel').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            
-            document.getElementById(panelId + 'Panel').classList.add('active');
-            
-            // Update progress steps
-            updateProgressSteps(panelId);
-        }
+        // Game elements
+        const playerNameInput = document.getElementById('playerName');
+        const playerGenderInput = document.getElementById('playerGender');
+        const genderBtns = document.querySelectorAll('.genderBtn');
+        const doInputs = [document.getElementById('do1'), document.getElementById('do2'), document.getElementById('do3')];
+        const dontInputs = [document.getElementById('dont1'), document.getElementById('dont2'), document.getElementById('dont3')];
+        const playerList = document.getElementById('playerList');
+        const randomDoBtn = document.getElementById('randomDoBtn');
+        const randomDontBtn = document.getElementById('randomDontBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const resetBtn = document.getElementById('resetBtn');
 
-        function updateProgressSteps(panelId) {
-            const steps = {
-                'welcome': 0,
-                'account': 0,
-                'profile': 1,
-                'payment': 2,
-                'game': 3
-            };
+        const participantsSelect = document.getElementById('participants');
+        const sceneDurationInput = document.getElementById('sceneDuration');
+        const generateBtn = document.getElementById('generateBtn');
+        const openAssignBtn = document.getElementById('openAssignBtn');
+        const startBtn = document.getElementById('startBtn');
+        const endBtn = document.getElementById('endBtn');
+
+        const sceneContent = document.getElementById('sceneContent');
+        const timerDisplay = document.getElementById('timer');
+        const pointsTableBody = document.getElementById('pointsTableBody');
+
+        const assignModal = document.getElementById('assignModal');
+        const assignList = document.getElementById('assignList');
+        const assignCancel = document.getElementById('assignCancel');
+        const assignConfirm = document.getElementById('assignConfirm');
+
+        const resultModal = document.getElementById('resultModal');
+        const resultText = document.getElementById('resultText');
+        const resultClose = document.getElementById('resultClose');
+
+        // Step management
+        function showStep(stepNumber) {
+            // Hide all sections
+            welcomeSection.style.display = 'none';
+            accountSection.style.display = 'none';
+            rulesSection.style.display = 'none';
+            profileSection.style.display = 'none';
+            myDozonSection.style.display = 'none';
+            groupDashboardSection.style.display = 'none';
+            createGroupSection.style.display = 'none';
+            paymentSection.style.display = 'none';
+            gameShell.style.display = 'none';
             
-            const currentStep = steps[panelId] || 0;
+            // Show progress steps
+            progressSteps.style.display = 'flex';
             
+            // Update active step
             document.querySelectorAll('.step').forEach((step, index) => {
-                if (index <= currentStep) {
+                if (index < stepNumber) {
                     step.classList.add('active');
-                    step.classList.remove('locked');
-                } else if (index === 3 && !userPaid) {
-                    // Game step is locked if not paid
-                    step.classList.remove('active');
-                    step.classList.add('locked');
                 } else {
                     step.classList.remove('active');
-                    step.classList.remove('locked');
                 }
             });
+            
+            // Show current section
+            switch(stepNumber) {
+                case 0:
+                    welcomeSection.style.display = 'flex';
+                    progressSteps.style.display = 'none';
+                    break;
+                case 1:
+                    accountSection.style.display = 'block';
+                    break;
+                case 2:
+                    rulesSection.style.display = 'block';
+                    break;
+                case 3:
+                    profileSection.style.display = 'block';
+                    break;
+                case 4:
+                    myDozonSection.style.display = 'block';
+                    break;
+                case 5:
+                    paymentSection.style.display = 'block';
+                    break;
+                case 6:
+                    gameShell.style.display = 'block';
+                    break;
+            }
+            
+            currentStep = stepNumber;
         }
 
-        // Initialize game elements
-        function initializeGame() {
-            // Account elements
-            document.getElementById('loginBtn').addEventListener('click', handleLogin);
-            document.getElementById('registerBtn').addEventListener('click', handleRegister);
-            document.getElementById('showRegisterBtn').addEventListener('click', () => {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('registerForm').style.display = 'block';
-            });
-            document.getElementById('showLoginBtn').addEventListener('click', () => {
-                document.getElementById('registerForm').style.display = 'none';
-                document.getElementById('loginForm').style.display = 'block';
-            });
-            document.getElementById('acceptRules').addEventListener('click', () => {
-                alert('Rules accepted! Creating your profile...');
-                switchPanel('profile');
-            });
-
-            // Profile elements
-            document.getElementById('saveProfile').addEventListener('click', () => {
-                const gender = document.getElementById('userGender').value;
-                const age = document.getElementById('userAge').value;
-                const bodyType = document.getElementById('userBodyType').value;
-                const purpose = document.getElementById('userPurpose').value;
-                const interests = document.getElementById('userInterests').value;
-                const personality = document.getElementById('userPersonality').value;
-
-                if (!gender || !age || !bodyType || !purpose || !interests || !personality) {
-                    alert('Please fill all fields to create your profile');
-                    return;
+        // helpers
+        function saveToStorage(){ 
+            try { 
+                if (currentUser) {
+                    const userData = {
+                        players: players,
+                        scene: currentScene,
+                        paid: userPaid,
+                        profile: userProfile
+                    };
+                    localStorage.setItem(`dozon_${currentUser}`, JSON.stringify(userData)); 
                 }
-
-                userProfile = { gender, age, bodyType, purpose, interests, personality };
-                alert('Profile saved successfully! Proceeding to payment...');
-                switchPanel('payment');
-            });
-
-            // Game elements (only initialize if paid)
-            if (userPaid) {
-                initializeGameElements();
-            }
-
-            // Payment elements
-            document.getElementById('paymentMethod').addEventListener('change', updatePaymentDetails);
-            document.getElementById('processPayment').addEventListener('click', processPayment);
-            document.getElementById('paymentSuccessClose').addEventListener('click', () => {
-                document.getElementById('paymentSuccessModal').style.display = 'none';
-                userPaid = true;
-                totalPaid += 969;
-                updateStats();
-                updateGameAccess();
-                initializeGameElements();
-                switchPanel('game');
-            });
-
-            // Initialize player list
-            renderPlayerList();
-            updatePointsTable();
+            } catch(e) { 
+                console.warn("Could not save to localStorage", e); 
+            } 
         }
-
-        // Initialize game elements after payment
-        function initializeGameElements() {
-            // Gender buttons
-            document.querySelectorAll('.genderBtn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.genderBtn').forEach(b => {
-                        b.classList.remove('selected');
-                        b.style.borderColor = '';
-                    });
-                    btn.classList.add('selected');
-                    btn.style.borderColor = 'var(--dozon-green)';
-                    document.getElementById('playerGender').value = btn.dataset.gender;
-                });
-            });
-
-            // Random buttons
-            document.getElementById('randomDoBtn').addEventListener('click', () => {
-                const sel = shuffle(randomDOs).slice(0, 3);
-                ['do1', 'do2', 'do3'].forEach((id, idx) => {
-                    document.getElementById(id).value = sel[idx] || '';
-                });
-            });
-
-            document.getElementById('randomDontBtn').addEventListener('click', () => {
-                const sel = shuffle(randomDONTs).slice(0, 3);
-                ['dont1', 'dont2', 'dont3'].forEach((id, idx) => {
-                    document.getElementById(id).value = sel[idx] || '';
-                });
-            });
-
-            // Save player
-            document.getElementById('saveBtn').addEventListener('click', savePlayer);
-
-            // Reset game
-            document.getElementById('resetBtn').addEventListener('click', resetGame);
-            document.getElementById('globalReset').addEventListener('click', showExitModal);
-
-            // Scene controls
-            document.getElementById('generateBtn').addEventListener('click', generateScene);
-            document.getElementById('openAssignBtn').addEventListener('click', openAssignForScene);
-            document.getElementById('startBtn').addEventListener('click', startScene);
-            document.getElementById('endBtn').addEventListener('click', endScene);
-
-            // Modal controls
-            document.getElementById('assignCancel').addEventListener('click', () => {
-                document.getElementById('assignModal').style.display = 'none';
-            });
-            document.getElementById('assignConfirm').addEventListener('click', assignConfirm);
-            document.getElementById('resultClose').addEventListener('click', () => {
-                document.getElementById('resultModal').style.display = 'none';
-            });
-        }
-
-        // Game functions
-        function savePlayer() {
-            if (!userPaid) {
-                alert('Payment required to save players');
-                return;
-            }
-            
-            const name = document.getElementById('playerName').value.trim();
-            const gender = document.getElementById('playerGender').value;
-            
-            if (!name) {
-                alert('Please enter your name');
-                return;
-            }
-            
-            const doActions = ['do1', 'do2', 'do3'].map(id => document.getElementById(id).value.trim()).filter(x => x);
-            const dontRules = ['dont1', 'dont2', 'dont3'].map(id => document.getElementById(id).value.trim()).filter(x => x);
-            
-            const existingIndex = players.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
-            
-            if (existingIndex !== -1) {
-                players[existingIndex] = { 
-                    name, gender, doActions, dontRules, 
-                    points: players[existingIndex].points || 0, 
-                    performing: false 
-                };
-            } else {
-                if (players.length >= 12) {
-                    alert('Maximum 12 players allowed');
-                    return;
+        
+        function loadFromStorage(){
+          try {
+            if (currentUser) {
+                const data = localStorage.getItem(`dozon_${currentUser}`);
+                if(data) {
+                    const userData = JSON.parse(data);
+                    players = userData.players || [];
+                    currentScene = userData.scene || null;
+                    userPaid = userData.paid || false;
+                    userProfile = userData.profile || null;
                 }
-                players.push({ name, gender, doActions, dontRules, points: 0, performing: false });
-                totalPlayers++;
-                updateStats();
             }
-            
-            renderPlayerList();
-            updatePointsTable();
-            clearPlayerInputs();
-        }
-
-        function clearPlayerInputs() {
-            document.getElementById('playerName').value = '';
-            ['do1', 'do2', 'do3', 'dont1', 'dont2', 'dont3'].forEach(id => {
-                document.getElementById(id).value = '';
-            });
-        }
-
-        function renderPlayerList() {
-            const playerList = document.getElementById('playerList');
-            playerList.innerHTML = '';
-            
-            players.forEach(player => {
-                const div = document.createElement('div');
-                div.className = 'player-card';
-                div.innerHTML = `
-                    <div class="player-name">${escapeHtml(player.name)}</div>
-                    <div style="font-size:10px;color:var(--lightgrey)">${player.gender}</div>
-                    <div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center">
-                        <div class="player-points">${player.points} pts</div>
-                        <button class="btn ghost" onclick="removePlayer('${escapeHtml(player.name)}')" style="padding:4px 8px;font-size:9px">Remove</button>
-                    </div>
-                `;
-                playerList.appendChild(div);
-            });
-            
-            // Fill empty slots
-            for (let i = players.length; i < 12; i++) {
-                const empty = document.createElement('div');
-                empty.className = 'player-card';
-                empty.style.opacity = '0.3';
-                empty.innerHTML = `
-                    <div class="player-name">Empty Slot</div>
-                    <div style="font-size:10px;color:var(--lightgrey)">Available</div>
-                    <div style="margin-top:6px;color:var(--lightgrey)">0 pts</div>
-                `;
-                playerList.appendChild(empty);
-            }
-            
-            document.getElementById('playerCount').textContent = players.length;
-        }
-
-        function removePlayer(name) {
-            players = players.filter(p => p.name !== name);
-            renderPlayerList();
-            updatePointsTable();
-            updateStats();
-        }
-
-        function generateScene() {
-            if (!userPaid) {
-                alert('Payment required to generate scenes');
-                return;
-            }
-            
-            if (players.length < 2) {
-                alert('Need at least 2 players to generate a scene');
-                return;
-            }
-            
-            const numParticipants = parseInt(document.getElementById('participants').value);
-            const duration = parseInt(document.getElementById('sceneDuration').value) || 180;
-            
-            if (players.length < numParticipants) {
-                alert(`Not enough players for ${numParticipants} participants`);
-                return;
-            }
-            
-            const shuffled = shuffle(players).slice(0, numParticipants);
-            let html = `<p><strong>Participants:</strong> ${shuffled.map(p => escapeHtml(p.name)).join(', ')}</p>`;
-            
-            shuffled.forEach(player => {
-                const actionIndex = Math.floor(Math.random() * Math.max(1, player.doActions.length));
-                const action = player.doActions.length ? player.doActions[actionIndex] : 'Take a moment to introduce yourself confidently.';
-                html += `<div class="action-text blue-text"><strong>${escapeHtml(player.name)}</strong> will: ${escapeHtml(action)}</div>`;
-            });
-            
-            html += `<div style="margin-top:8px"><strong>Rules for scene:</strong></div>`;
-            shuffled.forEach(player => {
-                const ruleIndex = Math.floor(Math.random() * Math.max(1, player.dontRules.length));
-                const rule = player.dontRules.length ? player.dontRules[ruleIndex] : 'Respect boundaries and be kind.';
-                html += `<div class="action-text pink-text">${escapeHtml(rule)}</div>`;
-            });
-            
-            document.getElementById('sceneContent').innerHTML = html;
-            currentScene = { 
-                participants: shuffled.map(p => p.name), 
-                duration, 
-                assignments: {}, 
-                started: false 
-            };
-            timeRemaining = duration;
-            updateTimerDisplay();
-            totalScenes++;
-            updateStats();
-            
-            openAssignForScene();
-        }
-
-        function openAssignForScene() {
-            if (!currentScene) {
-                alert('No scene. Generate a scene first.');
-                return;
-            }
-            
-            const assignList = document.getElementById('assignList');
-            assignList.innerHTML = '';
-            
-            currentScene.participants.forEach(name => {
-                const row = document.createElement('div');
-                row.className = 'choice-row';
-                row.innerHTML = `
-                    <div style="display:flex;align-items:center;gap:8px">
-                        <div style="font-weight:800">${escapeHtml(name)}</div>
-                    </div>
-                    <div style="display:flex;gap:6px">
-                        <label><input type="radio" name="choice-${escapeHtml(name)}" value="act"> Act</label>
-                        <label><input type="radio" name="choice-${escapeHtml(name)}" value="watch" checked> Watch</label>
-                    </div>
-                `;
-                assignList.appendChild(row);
-            });
-            
-            document.getElementById('assignModal').style.display = 'flex';
-        }
-
-        function assignConfirm() {
-            const assignments = {};
-            currentScene.participants.forEach(name => {
-                const radio = document.querySelector(`input[name="choice-${name}"]:checked`);
-                assignments[name] = radio ? radio.value : 'watch';
-            });
-            
-            currentScene.assignments = assignments;
-            document.getElementById('assignModal').style.display = 'none';
-            
-            // Update performing flags
-            players.forEach(p => {
-                p.performing = currentScene.assignments[p.name] === 'act';
-            });
-            
-            startScene();
-        }
-
-        function startScene() {
-            if (!currentScene || !currentScene.assignments) {
-                alert('Please assign Act/Watch roles first.');
-                return;
-            }
-            
-            currentScene.started = true;
-            timeRemaining = currentScene.duration;
-            
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timeRemaining--;
-                updateTimerDisplay();
-                if (timeRemaining <= 0) {
-                    clearInterval(timerInterval);
-                    endScene();
-                }
-            }, 1000);
-            
-            document.getElementById('gameStatus').textContent = 'PLAYING';
-            updateTimerDisplay();
-        }
-
-        function endScene() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-            
-            if (!currentScene || !currentScene.started) return;
-            
-            const summary = [];
-            currentScene.participants.forEach(name => {
-                const player = players.find(p => p.name === name);
-                if (!player) return;
-                
-                const choice = currentScene.assignments[name] || 'watch';
-                const points = choice === 'act' ? 10 : 1;
-                player.points += points;
-                player.performing = false;
-                summary.push({ name, choice, points });
-            });
-            
-            renderPlayerList();
-            updatePointsTable();
-            
-            // Show results
-            let resultHtml = '<div style="font-weight:800">Points awarded:</div><ul style="margin-top:8px;padding-left:0">';
-            summary.forEach(s => {
-                resultHtml += `<li style="margin-bottom:4px;background:var(--mediumgrey);padding:4px;">
-                    <strong>${escapeHtml(s.name)}</strong> — ${s.choice.toUpperCase()} → <strong style="color:var(--dozon-green)">${s.points} pts</strong>
-                </li>`;
-            });
-            resultHtml += '</ul>';
-            
-            document.getElementById('resultText').innerHTML = resultHtml;
-            document.getElementById('resultModal').style.display = 'flex';
-            
-            currentScene = null;
-            timeRemaining = 180;
-            updateTimerDisplay();
-            document.getElementById('gameStatus').textContent = 'SCENE COMPLETE';
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60;
-            document.getElementById('timer').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            if (timeRemaining <= 30) {
-                document.getElementById('timer').style.color = 'var(--danger-red)';
-            } else {
-                document.getElementById('timer').style.color = 'var(--xyz-violet)';
-            }
-        }
-
-        function updatePointsTable() {
-            const tbody = document.getElementById('pointsTableBody');
-            tbody.innerHTML = '';
-            
-            const sorted = [...players].sort((a, b) => b.points - a.points);
-            
-            sorted.forEach(player => {
-                const row = document.createElement('tr');
-                const genderDisplay = player.gender === 'male' ? 'M' : player.gender === 'female' ? 'F' : 'O';
-                row.innerHTML = `
-                    <td>${escapeHtml(player.name)}</td>
-                    <td>${genderDisplay}</td>
-                    <td class="player-points">${player.points}</td>
-                    <td>${player.performing ? 'ACT' : '—'}</td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            // Fill remaining rows
-            for (let i = sorted.length; i < 12; i++) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td style="opacity:0.5">-</td>
-                    <td style="opacity:0.5">-</td>
-                    <td style="opacity:0.5">0</td>
-                    <td style="opacity:0.5">-</td>
-                `;
-                tbody.appendChild(row);
-            }
-        }
-
-        function resetGame() {
-            if (!confirm('Reset game? All progress will be lost.')) return;
-            
+          } catch(e) {
+            console.warn("Could not load from localStorage", e);
             players = [];
             currentScene = null;
-            
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-            
-            timeRemaining = 180;
-            updateTimerDisplay();
-            renderPlayerList();
-            updatePointsTable();
-            document.getElementById('sceneContent').innerHTML = '<p style="margin:0">No active scene. Generate a scene to begin.</p>';
-            document.getElementById('gameStatus').textContent = 'READY';
+            userPaid = false;
+            userProfile = null;
+          }
         }
 
-        // Account functions
-        function handleLogin() {
+        // UI init
+        function showAccountSection(){
+            showStep(1);
+            
+            if (currentUser) {
+                updateAccountStatus();
+            }
+        }
+        
+        function showRulesSection() {
+            showStep(2);
+        }
+        
+        function showProfileSection() {
+            showStep(3);
+        }
+        
+        function showMyDozonSection() {
+            showStep(4);
+            
+            // Update profile preview if available
+            if (userProfile) {
+                profilePreview.style.display = 'none';
+                profileDetails.style.display = 'block';
+                document.getElementById('previewGender').textContent = userProfile.gender;
+                document.getElementById('previewAge').textContent = userProfile.age;
+                document.getElementById('previewBodyType').textContent = userProfile.bodyType;
+                document.getElementById('previewPurpose').textContent = userProfile.purpose;
+                document.getElementById('previewPersonality').textContent = userProfile.personality;
+                document.getElementById('previewExperience').textContent = userProfile.experience;
+                document.getElementById('previewInterests').textContent = userProfile.interests;
+            }
+        }
+        
+        function showGroupDashboard() {
+            showStep(4); // Still in My DOZON step
+            
+            // Hide My DOZON, show Group Dashboard
+            myDozonSection.style.display = 'none';
+            groupDashboardSection.style.display = 'block';
+            
+            // Set city name
+            const cityName = activityCity.options[activityCity.selectedIndex].text;
+            groupCityName.textContent = cityName;
+            
+            // Generate sample groups (in a real app, this would come from a server)
+            groupsList.innerHTML = '';
+            
+            // Sample groups data
+            const groups = [
+                { id: 1, name: cityName + '1', members: 8, description: 'Casual gaming group' },
+                { id: 2, name: cityName + '2', members: 5, description: 'Competitive players' },
+                { id: 3, name: cityName + '3', members: 11, description: 'Mixed experience levels' }
+            ];
+            
+            groups.forEach(group => {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'choice-row';
+                groupDiv.innerHTML = `
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <input type="radio" name="selectedGroup" value="${group.id}" id="group-${group.id}">
+                        <div>
+                            <div style="font-weight:800">${group.name}</div>
+                            <div style="font-size:13px;color:var(--lightgrey)">${group.members}/12 members • ${group.description}</div>
+                        </div>
+                    </div>
+                `;
+                groupsList.appendChild(groupDiv);
+            });
+        }
+        
+        function showCreateGroup() {
+            showStep(4); // Still in My DOZON step
+            
+            // Hide Group Dashboard, show Create Group
+            groupDashboardSection.style.display = 'none';
+            createGroupSection.style.display = 'block';
+            
+            // Set city info
+            const cityCode = activityCity.value;
+            const cityName = activityCity.options[activityCity.selectedIndex].text;
+            createGroupCity.textContent = cityName;
+            
+            // Generate group name (in a real app, this would check with server for next available)
+            const groupNumber = Math.floor(Math.random() * 5) + 4; // Random number between 4-8
+            newGroupName.textContent = cityCode + groupNumber;
+        }
+        
+        function showPaymentSection(){
+            showStep(5);
+        }
+        
+        function showGameShell(){
+            if (!currentUser || !userPaid) {
+                showAccountSection();
+                return;
+            }
+            
+            showStep(6);
+            gameShell.setAttribute('aria-hidden', 'false');
+        }
+        
+        function updateAccountStatus() {
+            if (currentUser) {
+                accountStatus.style.display = 'none';
+                loggedInStatus.style.display = 'block';
+                loggedInUser.textContent = currentUser;
+                
+                if (userPaid) {
+                    paymentStatus.textContent = "PAID";
+                    paymentStatus.style.color = "var(--accent)";
+                    proceedToRules.textContent = "Continue to Game";
+                } else {
+                    paymentStatus.textContent = "UNPAID";
+                    paymentStatus.style.color = "var(--lightgrey)";
+                    proceedToRules.textContent = "Proceed to Rules";
+                }
+            } else {
+                accountStatus.style.display = 'block';
+                loggedInStatus.style.display = 'none';
+            }
+        }
+
+        // Account management
+        quickBegin.addEventListener('click', showAccountSection);
+        blinkI.addEventListener('click', showAccountSection);
+        
+        showRegisterBtn.addEventListener('click', function() {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        });
+        
+        showLoginBtn.addEventListener('click', function() {
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'block';
+        });
+        
+        loginBtn.addEventListener('click', function() {
             const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
             
@@ -1989,12 +1522,20 @@
                 return;
             }
             
+            // In a real app, this would check against a server
+            // For demo, we'll just set the current user
             currentUser = username;
-            alert(`Welcome back, ${username}!`);
-            switchPanel('profile');
-        }
-
-        function handleRegister() {
+            loadFromStorage();
+            updateAccountStatus();
+            
+            if (userPaid) {
+                showGameShell();
+            } else {
+                showAccountSection();
+            }
+        });
+        
+        registerBtn.addEventListener('click', function() {
             const username = document.getElementById('registerUsername').value.trim();
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('registerConfirmPassword').value;
@@ -2014,33 +1555,137 @@
                 return;
             }
             
+            // In a real app, this would register with a server
+            // For demo, we'll just set the current user
             currentUser = username;
-            alert(`Account created successfully! Welcome to DOZON.XYZ, ${username}!`);
+            players = [];
+            currentScene = null;
+            userPaid = false;
+            userProfile = null;
+            saveToStorage();
+            updateAccountStatus();
+            showAccountSection();
             
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('loginForm').style.display = 'block';
+            // Switch to login form
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'block';
             
-            switchPanel('profile');
-        }
-
-        // Payment functions
-        function updatePaymentDetails() {
-            const method = document.getElementById('paymentMethod').value;
+            alert('Account created successfully! Please login to continue.');
+        });
+        
+        logoutBtn.addEventListener('click', function() {
+            currentUser = null;
+            players = [];
+            currentScene = null;
+            userPaid = false;
+            userProfile = null;
+            updateAccountStatus();
+            showStep(0);
+        });
+        
+        proceedToRules.addEventListener('click', function() {
+            if (userPaid) {
+                showGameShell();
+            } else {
+                showRulesSection();
+            }
+        });
+        
+        // Rules section
+        acceptRules.addEventListener('click', showProfileSection);
+        backToAccount.addEventListener('click', showAccountSection);
+        
+        // Profile section
+        saveProfile.addEventListener('click', function() {
+            const gender = document.getElementById('userGender').value;
+            const age = document.getElementById('userAge').value.trim();
+            const bodyType = document.getElementById('userBodyType').value;
+            const purpose = document.getElementById('userPurpose').value;
+            const interests = document.getElementById('userInterests').value.trim();
+            const personality = document.getElementById('userPersonality').value;
+            const experience = document.getElementById('userExperience').value;
+            
+            if (!gender || !age || !bodyType || !purpose || !interests || !personality || !experience) {
+                alert('Please answer all questions to create your profile');
+                return;
+            }
+            
+            userProfile = {
+                gender, age, bodyType, purpose, interests, personality, experience
+            };
+            
+            saveToStorage();
+            showMyDozonSection();
+        });
+        
+        backToRules.addEventListener('click', showRulesSection);
+        
+        // My DOZON section
+        checkGroups.addEventListener('click', function() {
+            const city = activityCity.value;
+            const date = activityDate.value;
+            
+            if (!city || !date) {
+                alert('Please select both city and date');
+                return;
+            }
+            
+            selectedCity = city;
+            showGroupDashboard();
+        });
+        
+        backToProfile.addEventListener('click', showProfileSection);
+        
+        // Group Dashboard
+        joinGroup.addEventListener('click', function() {
+            const selected = document.querySelector('input[name="selectedGroup"]:checked');
+            if (!selected) {
+                alert('Please select a group to join');
+                return;
+            }
+            
+            // In a real app, this would add user to the selected group
+            alert('Successfully joined group!');
+            showPaymentSection();
+        });
+        
+        createNewGroup.addEventListener('click', showCreateGroup);
+        backToMyDozon.addEventListener('click', function() {
+            groupDashboardSection.style.display = 'none';
+            myDozonSection.style.display = 'block';
+        });
+        
+        // Create Group
+        confirmCreateGroup.addEventListener('click', function() {
+            // In a real app, this would create the group on the server
+            alert('Group created successfully!');
+            showPaymentSection();
+        });
+        
+        backToGroupDashboard.addEventListener('click', function() {
+            createGroupSection.style.display = 'none';
+            groupDashboardSection.style.display = 'block';
+        });
+        
+        // Payment handling
+        paymentMethod.addEventListener('change', function() {
+            const method = this.value;
             let html = '';
             
             if (method === 'upi') {
                 html = `
-                    <div style="margin-top:10px">
+                    <div style="margin-top:16px">
                         <label for="upiId">UPI ID</label>
                         <input type="text" id="upiId" placeholder="yourname@upi">
                     </div>
                 `;
             } else if (method === 'card') {
                 html = `
-                    <div style="margin-top:10px">
+                    <div style="margin-top:16px">
                         <label for="cardNumber">Card Number</label>
                         <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+                        
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px">
                             <div>
                                 <label for="expiryDate">Expiry Date</label>
                                 <input type="text" id="expiryDate" placeholder="MM/YY">
@@ -2052,140 +1697,422 @@
                         </div>
                     </div>
                 `;
+            } else if (method === 'netbanking') {
+                html = `
+                    <div style="margin-top:16px">
+                        <label for="bank">Select Bank</label>
+                        <select id="bank">
+                            <option value="">Select your bank</option>
+                            <option value="sbi">State Bank of India</option>
+                            <option value="hdfc">HDFC Bank</option>
+                            <option value="icici">ICICI Bank</option>
+                            <option value="axis">Axis Bank</option>
+                        </select>
+                    </div>
+                `;
+            } else if (method === 'wallet') {
+                html = `
+                    <div style="margin-top:16px">
+                        <label for="wallet">Select Wallet</label>
+                        <select id="wallet">
+                            <option value="">Select your wallet</option>
+                            <option value="paytm">Paytm</option>
+                            <option value="phonepe">PhonePe</option>
+                            <option value="gpay">Google Pay</option>
+                        </select>
+                    </div>
+                `;
             }
             
-            document.getElementById('paymentDetails').innerHTML = html;
+            paymentDetails.innerHTML = html;
+        });
+        
+        processPayment.addEventListener('click', function() {
+            // In a real app, this would process payment with a payment gateway
+            // For demo, we'll just mark the user as paid
+            userPaid = true;
+            saveToStorage();
+            
+            paymentSuccessModal.style.display = 'flex';
+            paymentSuccessModal.setAttribute('aria-hidden','false');
+        });
+        
+        cancelPayment.addEventListener('click', showAccountSection);
+        
+        paymentSuccessClose.addEventListener('click', function() {
+            paymentSuccessModal.style.display = 'none';
+            paymentSuccessModal.setAttribute('aria-hidden','true');
+            showGameShell();
+        });
+
+        // Exit functionality
+        function showExitModal() {
+            exitModal.style.display = 'flex';
+            exitModal.setAttribute('aria-hidden','false');
+        }
+        
+        exitConfirm.addEventListener('click', function() {
+            // Clear all data
+            currentUser = null;
+            players = [];
+            currentScene = null;
+            userPaid = false;
+            userProfile = null;
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Show welcome screen
+            showStep(0);
+            exitModal.style.display = 'none';
+        });
+        
+        exitCancel.addEventListener('click', function() {
+            exitModal.style.display = 'none';
+        });
+
+        // Game functionality
+        function scrollIntoGame(){
+          setTimeout(()=>{ document.querySelector('.frame').scrollIntoView({behavior:'smooth', block:'start'}); }, 80);
         }
 
-        function processPayment() {
-            // Validate payment details
-            const method = document.getElementById('paymentMethod').value;
-            let isValid = true;
+        // Gender buttons
+        genderBtns.forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            genderBtns.forEach(b=>{
+                b.classList.remove('selected');
+                b.style.borderColor = '';
+            });
+            btn.classList.add('selected');
+            btn.style.borderColor = 'var(--accent)';
+            playerGenderInput.value = btn.dataset.gender;
+          });
+        });
+        // default
+        document.querySelector('.genderBtn[data-gender="male"]').classList.add('selected');
+
+        // random fillers
+        randomDoBtn.addEventListener('click', ()=>{
+          const sel = shuffle(randomDOs).slice(0,3);
+          doInputs.forEach((i,idx)=> i.value = sel[idx] || '');
+        });
+        randomDontBtn.addEventListener('click', ()=>{
+          const sel = shuffle(randomDONTs).slice(0,3);
+          dontInputs.forEach((i,idx)=> i.value = sel[idx] || '');
+        });
+
+        // Save player
+        saveBtn.addEventListener('click', ()=>{
+          if (!currentUser || !userPaid) {
+              showAccountSection();
+              return;
+          }
+          
+          const name = playerNameInput.value.trim();
+          const gender = playerGenderInput.value || 'other';
+          if(!name){ alert('Please enter your name'); return; }
+          const exists = players.findIndex(p=>p.name.toLowerCase() === name.toLowerCase());
+          const doActions = doInputs.map(i=>i.value.trim()).filter(x=>x);
+          const dontRules = dontInputs.map(i=>i.value.trim()).filter(x=>x);
+
+          if(exists !== -1){
+            players[exists].gender = gender;
+            players[exists].doActions = doActions;
+            players[exists].dontRules = dontRules;
+          } else {
+            if(players.length >= 12){ alert('Maximum 12 players allowed'); return; }
+            players.push({ name, gender, doActions, dontRules, points:0, performing:false, status:'idle' });
+          }
+          saveToStorage(); renderPlayerList(); updatePointsTable(); clearPlayerInputs();
+        });
+
+        function clearPlayerInputs(){
+          playerNameInput.value=''; doInputs.forEach(i=>i.value=''); dontInputs.forEach(i=>i.value='');
+        }
+
+        // Render players
+        function renderPlayerList(){
+          playerList.innerHTML = '';
+          players.forEach(p=>{
+            const div = document.createElement('div');
+            div.className = 'player-card';
+            div.innerHTML = `
+              <div class="player-name">${escapeHtml(p.name)}</div>
+              <div style="font-size:13px;color:var(--lightgrey)">${escapeHtml(p.gender)}</div>
+              <div style="margin-top:8px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+                <div class="player-points">${p.points} pts</div>
+                <div>
+                  <button class="btn ghost small" data-action="remove" data-name="${escapeHtml(p.name)}" style="padding: 5px 10px; font-size: 12px;">Remove</button>
+                </div>
+              </div>
+            `;
+            playerList.appendChild(div);
+          });
+          // fill empty slots
+          for(let i=players.length;i<12;i++){
+            const empty = document.createElement('div');
+            empty.className='player-card';
+            empty.style.opacity=0.3;
+            empty.innerHTML = `<div class="player-name">Empty Slot</div><div style="font-size:13px;color:var(--lightgrey)">Available</div><div style="margin-top:8px;color:var(--lightgrey)">0 pts</div>`;
+            playerList.appendChild(empty);
+          }
+        }
+
+        // click delegations on playerList (remove)
+        playerList.addEventListener('click', (e)=>{
+          const btn = e.target.closest('button[data-action="remove"]');
+          if(btn){
+            const name = btn.dataset.name;
+            players = players.filter(p=>p.name !== name);
+            saveToStorage(); renderPlayerList(); updatePointsTable();
+          }
+        });
+
+        // Reset full game
+        resetBtn.addEventListener('click', resetGame);
+        globalReset.addEventListener('click', showExitModal);
+        window.addEventListener('keydown', (e)=>{ if(e.key === 'F11'){ e.preventDefault && e.preventDefault(); resetGame(); } });
+
+        function resetGame(){
+          if(!confirm('Reset game? All progress will be lost.')) return;
+          players = []; currentScene = null; clearInterval(timerInterval); timerInterval=null; timeRemaining=180;
+          sceneContent.innerHTML = '<p style="margin:0">No active scene. Generate a scene to begin.</p>';
+          timerDisplay.textContent = formatTime(180);
+          saveToStorage(); renderPlayerList(); updatePointsTable(); clearPlayerInputs();
+        }
+
+        // utility shuffle
+        function shuffle(arr){ return arr.slice().sort(()=>0.5-Math.random()); }
+        function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+
+        // Generate scene
+        generateBtn.addEventListener('click', ()=>{
+          if(players.length < 2){ alert('Need at least 2 players to generate a scene'); return; }
+          const numParticipants = parseInt(participantsSelect.value,10);
+          const duration = parseInt(sceneDurationInput.value,10) || 180;
+          if(players.length < numParticipants){ alert(`Not enough players for ${numParticipants} participants`); return; }
+
+          const shuffled = shuffle(players).slice(0, numParticipants);
+          // build scene description
+          let html = `<div><p><strong>Participants:</strong> ${shuffled.map(p=>escapeHtml(p.name)).join(', ')}</p></div>`;
+          shuffled.forEach((p, idx)=>{
+            const actionIndex = Math.floor(Math.random() * Math.max(1, (p.doActions||[]).length));
+            const action = (p.doActions && p.doActions.length) ? p.doActions[actionIndex] : `Take a moment to introduce yourself confidently.`;
+            html += `<div class="action-text blue-text"><strong>${escapeHtml(p.name)}</strong> will: ${escapeHtml(action)}</div>`;
+          });
+
+          // rules aggregated
+          html += `<div style="margin-top:12px"><strong>Rules for scene:</strong></div>`;
+          shuffled.forEach((p)=>{
+            const ruleIndex = Math.floor(Math.random() * Math.max(1, (p.dontRules||[]).length));
+            const rule = (p.dontRules && p.dontRules.length) ? p.dontRules[ruleIndex] : `Respect boundaries and be kind.`;
+            html += `<div class="action-text pink-text">${escapeHtml(rule)}</div>`;
+          });
+
+          sceneContent.innerHTML = html;
+          currentScene = { participants: shuffled.map(x=>x.name), duration, assignments: {}, started:false, startAt:null };
+          timeRemaining = duration;
+          updateTimerDisplay();
+          saveToStorage();
+
+          // After generation, open assign modal automatically
+          openAssignForScene();
+        });
+
+        // Open assignment modal (or via button)
+        openAssignBtn.addEventListener('click', openAssignForScene);
+        function openAssignForScene(){
+          if(!currentScene){ alert('No scene. Generate a scene first.'); return; }
+          // build assign list
+          assignList.innerHTML = '';
+          currentScene.participants.forEach(name=>{
+            const row = document.createElement('div');
+            row.className = 'choice-row';
+            row.innerHTML = `
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="font-weight:800">${escapeHtml(name)}</div>
+                <div style="font-size:13px;color:var(--lightgrey)"> (choose)</div>
+              </div>
+              <div style="display:flex;gap:8px">
+                <label><input type="radio" name="choice-${escapeHtml(name)}" value="act"> Act</label>
+                <label><input type="radio" name="choice-${escapeHtml(name)}" value="watch" checked> Watch</label>
+              </div>
+            `;
+            assignList.appendChild(row);
+          });
+          assignModal.style.display = 'flex';
+          assignModal.setAttribute('aria-hidden','false');
+        }
+
+        assignCancel.addEventListener('click', ()=>{
+          assignModal.style.display = 'none';
+          assignModal.setAttribute('aria-hidden','true');
+        });
+
+        // Confirm assignments and immediately start play
+        assignConfirm.addEventListener('click', ()=>{
+          // read choices
+          const assignments = {};
+          currentScene.participants.forEach(name=>{
+            const r = document.querySelector(`input[name="choice-${CSS.escape(name)}"]:checked`);
+            assignments[name] = (r && r.value==='act') ? 'act' : 'watch';
+          });
+          currentScene.assignments = assignments;
+          assignModal.style.display = 'none';
+          assignModal.setAttribute('aria-hidden','true');
+
+          // Set performing flags on players
+          players.forEach(p=> p.performing = !!(currentScene.assignments[p.name] === 'act'));
+          saveToStorage(); renderPlayerList(); updatePointsTable();
+
+          // Start the scene automatically
+          startScene();
+        });
+
+        // Start scene
+        startBtn.addEventListener('click', ()=>{ if(!currentScene){ alert('No scene to start. Generate scene first.'); return; } startScene(); });
+
+        function startScene(){
+          if(!currentScene) { alert('No scene selected. Generate one first.'); return; }
+          if(!currentScene.assignments || Object.keys(currentScene.assignments).length === 0) {
+            alert('Please assign Act/Watch roles first.');
+            openAssignForScene();
+            return;
+          }
+          if(currentScene.started){ alert('Scene already running'); return; }
+          
+          currentScene.started = true;
+          currentScene.startAt = Date.now();
+          timeRemaining = currentScene.duration || 180;
+          updateTimerDisplay();
+          if(timerInterval) clearInterval(timerInterval);
+          timerInterval = setInterval(()=>{ timeRemaining--; updateTimerDisplay(); if(timeRemaining<=0){ clearInterval(timerInterval); timerInterval=null; endScene(); } }, 1000);
+          // UI:
+          sceneContent.insertAdjacentHTML('afterbegin', `<div style="font-size:13px;color:var(--accent); padding-bottom: 10px; border-bottom: 1px solid var(--secondary); margin-bottom: 10px;"><strong>PLAYING:</strong> ${Object.entries(currentScene.assignments).map(([n,c])=>n+'→'+c.toUpperCase()).join(', ')}</div>`);
+          saveToStorage();
+        }
+
+        // End scene & award points
+        endBtn.addEventListener('click', endScene);
+
+        function endScene(){
+          if(!currentScene || !currentScene.started){ alert('No active scene'); return; }
+          if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
+          
+          currentScene.started = false; // Mark as no longer running
+          
+          // award points: ACT = 10, WATCH = 1
+          const summary = [];
+          currentScene.participants.forEach(name=>{
+            const p = players.find(x=>x.name===name);
+            if(!p) return;
+            const choice = currentScene.assignments && currentScene.assignments[name] ? currentScene.assignments[name] : 'watch';
+            const pts = (choice === 'act') ? 10 : 1;
+            p.points = (p.points || 0) + pts;
+            summary.push({ name, choice, pts });
+            // reset performing flag
+            p.performing = false;
+          });
+          // Save and update UI
+          saveToStorage(); renderPlayerList(); updatePointsTable();
+
+          // Display result modal
+          resultText.innerHTML = `<div style="font-weight:800; font-family: var(--font-rajdhani);">Points awarded:</div>
+            <ul style="margin-top:8px; list-style-type: none; padding-left: 0;">${summary.map(s=>`<li style="margin-bottom: 5px; background: var(--mediumgrey); padding: 5px;"><strong>${escapeHtml(s.name)}</strong> — ${escapeHtml(s.choice.toUpperCase())} → <strong style="color: var(--accent);">${s.pts} pts</strong></li>`).join('')}</ul>`;
+          resultModal.style.display = 'flex';
+          resultModal.setAttribute('aria-hidden','false');
+
+          // mark scene complete
+          currentScene = null;
+          saveToStorage();
+        }
+
+        resultClose.addEventListener('click', ()=>{
+          resultModal.style.display='none'; resultModal.setAttribute('aria-hidden','true');
+          sceneContent.innerHTML = '<p style="margin:0">No active scene. Generate a scene to begin.</p>';
+          timerDisplay.textContent = formatTime(180);
+          timerDisplay.style.color = 'var(--rose-gold)';
+        });
+
+        // Timer display
+        function updateTimerDisplay(){
+          timerDisplay.textContent = formatTime(timeRemaining);
+          if(timeRemaining <= 30 && timeRemaining > 0) {
+              timerDisplay.style.color = 'var(--red)';
+              timerDisplay.style.animation = 'blink 0.5s steps(1) infinite';
+          } else if (timeRemaining <= 0) {
+              timerDisplay.style.color = 'var(--red)';
+              timerDisplay.style.animation = 'none';
+          }
+          else {
+              timerDisplay.style.color = 'var(--rose-gold)';
+              timerDisplay.style.animation = 'none';
+          }
+        }
+        function formatTime(s){
+          const m = Math.floor(s/60); const sec = Math.max(0, s%60);
+          return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+        }
+
+        // points table
+        function updatePointsTable(){
+          pointsTableBody.innerHTML = '';
+          const sorted = players.slice().sort((a,b)=>b.points - a.points);
+          sorted.forEach(p=>{
+            const tr = document.createElement('tr');
+            const genderDisplay = (p.gender==='male'?'M': (p.gender==='female'?'F':'O'));
+            tr.innerHTML = `<td>${escapeHtml(p.name)}</td><td>${genderDisplay}</td><td class="player-points">${p.points}</td><td>${p.performing ? 'ACT' : '—'}</td>`;
+            pointsTableBody.appendChild(tr);
+          });
+          for(let i=sorted.length;i<12;i++){
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td style="opacity:.5">-</td><td style="opacity:.5">-</td><td style="opacity:.5">0</td><td style="opacity:.5">-</td>`;
+            pointsTableBody.appendChild(tr);
+          }
+        }
+
+        // load state on start
+        window.addEventListener('load', () => {
+            createParticles();
             
-            if (method === 'upi') {
-                const upiId = document.getElementById('upiId').value;
-                if (!upiId || !upiId.includes('@')) {
-                    alert('Please enter a valid UPI ID (e.g., yourname@upi)');
-                    isValid = false;
+            // Set minimum date to today
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('activityDate').min = formattedDate;
+            
+            // Check if user is already logged in
+            const savedUser = sessionStorage.getItem('dozon_currentUser');
+            if (savedUser) {
+                currentUser = savedUser;
+                loadFromStorage();
+                updateAccountStatus();
+                
+                if (userPaid) {
+                    showGameShell();
+                    renderPlayerList();
+                    updatePointsTable();
+                    if(currentScene && currentScene.participants){
+                      sceneContent.innerHTML = `<p style="margin:0"><strong>Loaded Scene:</strong> ${currentScene.participants.join(', ')}</p>`;
+                      timeRemaining = currentScene.duration || 180;
+                      updateTimerDisplay();
+                    }
+                } else {
+                    showAccountSection();
                 }
             }
-            
-            if (!isValid) return;
-            
-            // Simulate payment processing
-            setTimeout(() => {
-                document.getElementById('paymentSuccessModal').style.display = 'flex';
-            }, 1000);
-        }
+        });
 
-        function showExitModal() {
-            if (confirm('Are you sure you want to reset everything? This will also reset your payment status.')) {
-                resetGame();
-                currentUser = null;
-                userPaid = false;
-                userProfile = null;
-                totalPlayers = 0;
-                totalScenes = 0;
-                totalPaid = 0;
-                updateStats();
-                updateGameAccess();
-                switchPanel('welcome');
+        // Save current user to session storage
+        window.addEventListener('beforeunload', () => {
+            if (currentUser) {
+                sessionStorage.setItem('dozon_currentUser', currentUser);
             }
-        }
+        });
 
-        // Utility functions
-        function shuffle(array) {
-            return [...array].sort(() => Math.random() - 0.5);
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Background canvas
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function initCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            // Create particles
-            for (let i = 0; i < 60; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5,
-                    size: Math.random() * 2 + 1,
-                    color: Math.random() > 0.5 ? 'rgba(0, 255, 0, 0.2)' : 'rgba(143, 0, 255, 0.2)'
-                });
-            }
-            
-            drawBackground();
-        }
-
-        function drawBackground() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Update and draw particles
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                
-                // Bounce off edges
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-                
-                // Draw particle
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Draw connections
-                particles.forEach(other => {
-                    const dx = p.x - other.x;
-                    const dy = p.y - other.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 100) {
-                        ctx.strokeStyle = 'rgba(0, 255, 0, 0.1)';
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(other.x, other.y);
-                        ctx.stroke();
-                    }
-                });
-            });
-            
-            requestAnimationFrame(drawBackground);
-        }
-
-        // Update time
-        function updateTime() {
-            setInterval(() => {
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString([], { hour12: false });
-                document.getElementById('liveTime').textContent = timeStr;
-            }, 1000);
-        }
-
-        // Update stats
-        function updateStats() {
-            document.getElementById('livePlayers').textContent = totalPlayers;
-            document.getElementById('liveScenes').textContent = totalScenes;
-            document.getElementById('livePaid').textContent = totalPaid;
-            document.getElementById('playerCount').textContent = players.length;
-        }
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            initCanvas();
+        // Accessibility: Enter key flows
+        document.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter'){
+            if(gameShell.style.display === 'none'){ showGameShell(); }
+          }
         });
     </script>
 </body>
